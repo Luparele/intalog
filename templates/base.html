@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Intalog{% endblock %}</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <nav class="sidebar">
+        <ul>
+            <li><a href="{% url 'APP:dashboard' %}"><i class="fas fa-home"></i><span class="link-text">Início</span></a></li>
+            
+            {% if user.is_superuser %}
+            <li><a href="{% url 'APP:cadastrar_cliente' %}"><i class="fas fa-briefcase"></i><span class="link-text">Cadastrar PGR</span></a></li>
+            {% endif %}
+            
+            <li><a href="{% url 'APP:consultar_clientes' %}"><i class="fas fa-search-dollar"></i><span class="link-text">Consultar PGR</span></a></li>
+            <li><a href="{% url 'APP:gestao_gerenciadoras' %}"><i class="fas fa-shield-halved"></i><span class="link-text">Gerenciadoras de Risco</span></a></li>
+            <li><a href="{% url 'APP:gestao_seguros' %}"><i class="fas fa-file-shield"></i><span class="link-text">Gestão de Seguros</span></a></li>
+            <li><a href="{% url 'APP:gestao_averbacoes' %}"><i class="fas fa-file-signature"></i><span class="link-text">Averbações</span></a></li>
+            <li><a href="{% url 'APP:enviar_mensagem' %}"><i class="fas fa-paper-plane"></i><span class="link-text">Enviar Mensagem</span></a></li>
+            <li><a href="{% url 'APP:pagina_downloads' %}"><i class="fas fa-download"></i><span class="link-text">Downloads</span></a></li>
+            
+            {% if user.is_superuser %}
+            <li><a href="{% url 'admin:index' %}" target="_blank" rel="noopener noreferrer"><i class="fas fa-cogs"></i><span class="link-text">Configurações</span></a></li>
+            {% endif %}
+            
+            <li><a href="{% url 'APP:alterar_senha' %}"><i class="fas fa-key"></i><span class="link-text">Alterar Senha</span></a></li>
+            
+            {% if user.is_superuser %}
+            <li><a href="{% url 'APP:cadastrar_usuario' %}"><i class="fas fa-user-gear"></i><span class="link-text">Cadastrar Usuário</span></a></li>
+            {% endif %}
+
+            <li><form action="{% url 'APP:logout' %}" method="post" class="logout-form">{% csrf_token %}<button type="submit" class="logout-button"><i class="fas fa-sign-out-alt"></i><span class="link-text">Sair</span></button></form></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="top-banner">
+            <img src="{% static 'images/logo.png' %}" alt="Logo Intalog">
+        </div>
+        <div class="main-content-container">
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    {{ message }}
+                    <span class="close-message">×</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Intalog</h3>
+                <p>Otimizando a logística e a gestão de sua equipe com tecnologia e precisão.</p>
+                <p>© {% now "Y" %} Intalog. Todos os direitos reservados.</p>
+                <p style="margin-top: 1rem;">Desenvolvedor: <a href="https://github.com/Luparele" target="_blank" rel="noopener noreferrer" style="vertical-align: middle;"><img src="https://img.shields.io/badge/GitHub-Luparele-brightgreen?style=flat-square" alt="Meu GitHub"></a>
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Links Úteis</h4>
+                <ul>
+                    <li><a href="{% url 'APP:dashboard' %}">Página Inicial</a></li>
+                    <li><a href="https://www.instagram.com/intaloglogistica/" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="https://hk.linkedin.com/company/intalog-logistica-e-transportes-ltda" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                    <li><a href="{% url 'APP:politica_de_privacidade' %}">Política de Privacidade</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Contato</h4>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i><a href="https://www.google.com/maps/search/?api=1&query=Rua+do+Alho+255%2C+Penha+Circular%2C+Rio+de+Janeiro%2C+RJ" target="_blank" rel="noopener noreferrer"> Rua do Alho 255, Penha Circular - RJ</a></li>
+                    <li><i class="fas fa-phone"></i> (21) 2584-4004 / (21) 99680-0387</li>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:comercial@intalog.com.br">comercial@intalog.com.br</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

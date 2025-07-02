@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Cliente - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cadastro_cliente.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2>Editar Cliente: {{ cliente.cliente }}</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <fieldset>
+            <legend>Dados do Cliente</legend>
+            <div class="form-grid">
+                <div class="form-field full-width">{{ form.cliente.label_tag }}{{ form.cliente }}</div>
+                <div class="form-field">{{ form.gerente_conta.label_tag }}{{ form.gerente_conta }}</div>
+                <div class="form-field">{{ form.telefone_gc.label_tag }}{{ form.telefone_gc }}</div>
+                <div class="form-field full-width">{{ form.email_gc.label_tag }}{{ form.email_gc }}</div>
+                <div class="form-field">{{ form.tipo_seguro.label_tag }}{{ form.tipo_seguro }}</div>
+                <div class="form-field ddr-field">{{ form.ddr_arquivo.label_tag }}{{ form.ddr_arquivo }}</div>
+                <div class="form-field">{{ form.vigencia_pgr.label_tag }}{{ form.vigencia_pgr }}</div>
+                <div class="form-field">{{ form.pgr_arquivo.label_tag }}{{ form.pgr_arquivo }}</div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Regras de Embarque</legend>
+            {{ formset.management_form }}
+            <div id="regras-form-container">
+                {% for regra_form in formset %}
+                <div class="regra-embarque-form">
+                    <h4>Regra #{{ forloop.counter }}</h4>
+                    {% for field in regra_form.hidden_fields %}{{ field }}{% endfor %}
+                    <div class="form-grid">
+                        <div class="form-field">{{ regra_form.valor_min.label_tag }}{{ regra_form.valor_min }}</div>
+                        <div class="form-field">{{ regra_form.valor_max.label_tag }}{{ regra_form.valor_max }}</div>
+                        <div class="form-field full-width checkbox-group">
+                            <strong>Tipo de Contrato:</strong>
+                            {{ regra_form.contrato_frota.label_tag }} {{ regra_form.contrato_frota }}
+                            {{ regra_form.contrato_agregado.label_tag }} {{ regra_form.contrato_agregado }}
+                            {{ regra_form.contrato_terceiro.label_tag }} {{ regra_form.contrato_terceiro }}
+                        </div>
+                        <div class="form-field">{{ regra_form.rastreado.label_tag }} {{ regra_form.rastreado }}</div>
+                        <div class="form-field">{{ regra_form.escolta.label_tag }} {{ regra_form.escolta }}</div>
+                        <div class="form-field">{{ regra_form.isca_movel.label_tag }} {{ regra_form.isca_movel }}</div>
+                        <div class="form-field isca-quantidade-field">{{ regra_form.quantidade_iscas.label_tag }} {{ regra_form.quantidade_iscas }}</div>
+                        <div class="form-field full-width">{{ regra_form.rastreador_redundancia.label_tag }} {{ regra_form.rastreador_redundancia }}</div>
+                        <div class="form-field">{{ regra_form.idade_max_cavalo.label_tag }}{{ regra_form.idade_max_cavalo }}</div>
+                        <div class="form-field">{{ regra_form.idade_max_carreta.label_tag }}{{ regra_form.idade_max_carreta }}</div>
+                        <div class="form-field full-width">{{ regra_form.observacoes.label_tag }}{{ regra_form.observacoes }}</div>
+                        {% if regra_form.instance.pk %}
+                            <div class="form-field full-width">{{ regra_form.DELETE.label_tag }} {{ regra_form.DELETE }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <button type="button" id="add-regra-btn" class="btn-secondary">+ Adicionar Regra</button>
+        </fieldset>
+
+        <button type="submit" class="btn-principal">Salvar Alterações</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/cadastro_cliente.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gestão de Seguros - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gestao_seguros.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Gestão de Seguros</h2>
+            {% if user.is_superuser %}
+            <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Novo Seguro</button>
+            {% endif %}
+        </div>
+        
+        <div class="lista-itens">
+            {% for seguro in seguros %}
+                <div class="item-container">
+                    <div class="item-header">
+                        <span class="info-resumida">
+                            <strong>Apólice:</strong> {{ seguro.tipo_apolice }} - <strong>Vigência:</strong> {{ seguro.vigencia|date:"d/m/Y" }}
+                        </span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <div class="detalhes-grid">
+                            <p><strong>Cliente:</strong> {{ seguro.cliente.cliente }}</p>
+                            <p><strong>Corretora:</strong> {{ seguro.corretora }}</p>
+                            <p><strong>Corretor:</strong> {{ seguro.corretor }}</p>
+                            <p><strong>Telefone Corretor:</strong> {{ seguro.tel_corretor }}</p>
+                            <p><strong>E-mail Corretor:</strong> {{ seguro.email_corretor }}</p>
+                            <p><strong>Vigência:</strong> {{ seguro.vigencia|date:"d/m/Y" }}</p>
+                            <p class="full-width-p"><strong>Descrição:</strong> {{ seguro.descricao }}</p>
+                            {% if seguro.apolice_anexo %}
+                            <p class="full-width-p"><strong>Apólice Anexada:</strong> <a href="{{ seguro.apolice_anexo.url }}" target="_blank">Ver anexo</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum seguro cadastrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id="modal-seguro" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cadastrar Novo Seguro</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                    <button type="submit" class="btn-principal">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/gestao_seguros.js' %}"></script>
+{% endblock %}

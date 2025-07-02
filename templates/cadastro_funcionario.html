@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastro de Funcionário - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cadastro_funcionario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2>Cadastro de Novo Funcionário</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-grid">
+
+            <div class="form-field full-width">
+                {{ form.nome.label_tag }}
+                {{ form.nome }}
+            </div>
+
+            <div class="form-field">
+                {{ form.data_nascimento.label_tag }}
+                {{ form.data_nascimento }}
+            </div>
+
+            <div class="form-field">
+                {{ form.cpf.label_tag }}
+                {{ form.cpf }}
+            </div>
+
+            <div class="form-field">
+                {{ form.rg.label_tag }}
+                {{ form.rg }}
+            </div>
+
+            <div class="form-field">
+                {{ form.data_expedicao.label_tag }}
+                {{ form.data_expedicao }}
+            </div>
+
+            <div class="form-field">
+                {{ form.orgao_expedicao.label_tag }}
+                {{ form.orgao_expedicao }}
+            </div>
+
+            <div class="form-field">
+                {{ form.uf.label_tag }}
+                {{ form.uf }}
+            </div>
+
+            <div class="form-field full-width">
+                {{ form.endereco.label_tag }}
+                {{ form.endereco }}
+            </div>
+
+            <div class="form-field">
+                {{ form.telefone_pessoal.label_tag }}
+                {{ form.telefone_pessoal }}
+            </div>
+
+            <div class="form-field">
+                {{ form.telefone_corporativo.label_tag }}
+                {{ form.telefone_corporativo }}
+            </div>
+
+            <div class="form-field">
+                {{ form.setor.label_tag }}
+                {{ form.setor }}
+            </div>
+
+            <div class="form-field">
+                {{ form.funcao.label_tag }}
+                {{ form.funcao }}
+            </div>
+
+            <div class="form-field full-width">
+                {{ form.email_corporativo.label_tag }}
+                {{ form.email_corporativo }}
+            </div>
+
+            <div class="form-field">
+                {{ form.tipo_contrato.label_tag }}
+                {{ form.tipo_contrato }}
+            </div>
+
+            <div class="form-field">
+                {{ form.foto.label_tag }}
+                {{ form.foto }}
+            </div>
+
+            <div class="form-field full-width">
+                {{ form.anotacoes.label_tag }}
+                {{ form.anotacoes }}
+            </div>
+
+        </div>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
+{% endblock %}

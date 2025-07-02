@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Consulta de PGR's - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% include 'partials/_alerta_lgpd.html' %}
+
+    <div class="consulta-card">
+        <h2>Consulta de PGR's</h2>
+
+        <form method="get" class="form-busca">
+            <input type="text" name="q" placeholder="Digite o nome do cliente..." value="{{ query|default:'' }}">
+            <button type="submit">Localizar</button>
+        </form>
+
+        <div class="lista-itens">
+            {% for cliente in clientes %}
+                <div class="item-container">
+                    <div class="item-header">
+                        <span class="info-resumida">
+                            <strong>Cliente:</strong> {{ cliente.cliente|default:"Sem nome" }} - <strong>GC:</strong> {{ cliente.gerente_conta|default:"N/A" }}
+                        </span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+
+                    <div class="item-detalhes">
+                        
+                        <div class="detalhes-secao">
+                            <h4>Dados do Cliente</h4>
+                            <div class="detalhes-grid">
+                                <p><strong>Gerente de Conta:</strong> {{ cliente.gerente_conta|default:"N/A" }}</p>
+                                <p>
+                                    <strong>Telefone GC:</strong>
+                                    {% if cliente.telefone_gc %}
+                                        <a href="{{ cliente.whatsapp_link_gc }}" target="_blank" rel="noopener noreferrer">
+                                            {{ cliente.telefone_gc }} <i class="fab fa-whatsapp" style="color: #25D366;"></i>
+                                        </a>
+                                    {% else %}
+                                        N/A
+                                    {% endif %}
+                                </p>
+                                <p><strong>E-mail GC:</strong> {{ cliente.email_gc|default:"N/A" }}</p>
+                                <p><strong>Tipo de Seguro:</strong> {{ cliente.get_tipo_seguro_display|default:"N/A" }}</p>
+                                <p><strong>Vigência PGR:</strong> {{ cliente.vigencia_pgr|date:"d/m/Y"|default:"N/A" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="detalhes-secao">
+                            <h4>Regras de Embarque</h4>
+                            <div class="regras-container">
+                                {% for regra in cliente.regras_de_embarque.all %}
+                                    <div class="regra-item">
+                                        <h5>Regra #{{ forloop.counter }}</h5>
+                                        <div class="detalhes-grid">
+                                            <p><strong>Faixa de Valor:</strong> R$ {{ regra.valor_min }} a R$ {{ regra.valor_max }}</p>
+                                            <p><strong>Contrato:</strong> 
+                                                {% if regra.contrato_frota %}Frota {% endif %}
+                                                {% if regra.contrato_agregado %}Agregado {% endif %}
+                                                {% if regra.contrato_terceiro %}Terceiro{% endif %}
+                                            </p>
+                                            <p><strong>Rastreado:</strong> {% if regra.rastreado %}Sim{% else %}Não{% endif %}</p>
+                                            <p><strong>Escolta:</strong> {% if regra.escolta %}Sim{% else %}Não{% endif %}</p>
+                                            <p><strong>Isca Móvel:</strong> {% if regra.isca_movel %}Sim ({{ regra.get_quantidade_iscas_display }} isca(s)){% else %}Não{% endif %}</p>
+                                            <p><strong>Idade Máx. Cavalo:</strong> {{ regra.idade_max_cavalo }} anos</p>
+                                            <p><strong>Idade Máx. Carreta:</strong> {{ regra.idade_max_carreta }} anos</p>
+                                            <p class="full-width-p"><strong>Observações:</strong> {{ regra.observacoes|default:"Sem observações cadastradas" }}</p>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <p>Nenhuma regra de embarque cadastrada para este cliente.</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% if user.is_superuser %}
+                            <div class="botoes-acao">
+                                <a href="{% url 'APP:editar_cliente' pk=cliente.pk %}" class="btn-editar">Editar Cadastro</a>
+                                <a href="{% url 'APP:excluir_cliente' pk=cliente.pk %}" class="btn-excluir">Excluir Cadastro</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum cliente encontrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/listar_clientes.js' %}"></script>
+{% endblock %}

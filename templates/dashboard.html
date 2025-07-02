@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Dashboard - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="dashboard-header">
+        <h2>Painel de Controle</h2>
+        <p>Bem-vindo(a) de volta, {{ user.get_full_name|default:user.username }}! Aqui está uma visão geral do sistema.</p>
+    </div>
+
+    <div class="stats-card-grid">
+        <a href="{% url 'APP:consultar_clientes' %}" class="stat-card-item"><div class="stat-card-icon" style="background-color: #17a2b8;"><i class="fas fa-search-dollar"></i></div><div class="stat-card-info"><span class="stat-card-number">{{ total_clientes }}</span><span class="stat-card-label">PGRs Cadastrados</span></div></a>
+        <a href="{% url 'APP:gestao_gerenciadoras' %}" class="stat-card-item"><div class="stat-card-icon" style="background-color: #6f42c1;"><i class="fas fa-shield-halved"></i></div><div class="stat-card-info"><span class="stat-card-number">{{ total_gerenciadoras }}</span><span class="stat-card-label">Gerenciadoras de Risco</span></div></a>
+        <a href="{% url 'APP:gestao_seguros' %}" class="stat-card-item"><div class="stat-card-icon" style="background-color: #fd7e14;"><i class="fas fa-file-shield"></i></div><div class="stat-card-info"><span class="stat-card-number">{{ total_seguros }}</span><span class="stat-card-label">Seguros Cadastrados</span></div></a>
+        <a href="{% url 'APP:gestao_averbacoes' %}" class="stat-card-item"><div class="stat-card-icon" style="background-color: #20c997;"><i class="fas fa-file-signature"></i></div><div class="stat-card-info"><span class="stat-card-number">{{ total_averbacoes }}</span><span class="stat-card-label">Averbações</span></div></a>
+        <a href="{% url 'APP:pagina_downloads' %}" class="stat-card-item"><div class="stat-card-icon" style="background-color: #6c757d;"><i class="fas fa-download"></i></div><div class="stat-card-info"><span class="stat-card-number">{{ total_downloads }}</span><span class="stat-card-label">Arquivos para Download</span></div></a>
+    </div>
+
+    <h3 class="section-title">Análises e Comunicações</h3>
+    <div class="dashboard-grid">
+        <div class="dashboard-card card-grafico-bar">
+             <div class="card-header"><i class="fas fa-chart-bar"></i><h3>Averbações por Tipo</h3></div>
+             <div class="chart-container-bar"><canvas id="graficoAverbacoes"></canvas></div>
+        </div>
+
+        <div class="dashboard-card card-grafico">
+            <div class="card-header"><i class="fas fa-chart-line"></i><h3>Crescimento de Cadastros (Últimos 7 Dias)</h3></div>
+            <div class="chart-container-bar"><canvas id="graficoCrescimento"></canvas></div>
+        </div>
+        
+        <div class="dashboard-card card-mensagem-pessoal">
+            <div class="card-header"><i class="fas fa-envelope"></i><h3>Mensagens Pessoais</h3></div>
+            <ul class="mensagem-lista">
+                {% for msg in mensagens_pessoais %}
+                    <li class="mensagem-item {% if not msg.lida %}nao-lida{% endif %}"
+                        data-id="{{ msg.pk }}" data-remetente="{{ msg.remetente.username }}" data-remetente-id="{{ msg.remetente.pk }}"
+                        data-data="{{ msg.data_envio|date:'d/m/Y H:i' }}" data-conteudo="{{ msg.conteudo }}">
+                        <p class="conteudo">{{ msg.conteudo|truncatechars:50 }}</p>
+                        <small>De: {{ msg.remetente.username }} - {{ msg.data_envio|timesince }} atrás</small>
+                    </li>
+                {% empty %}
+                    <li class="sem-resultados">Nenhuma mensagem pessoal.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="dashboard-card card-mensagem-geral">
+            <div class="card-header"><i class="fas fa-bullhorn"></i><h3>Mensagens Gerais</h3></div>
+            <ul class="mensagem-lista">
+                {% for msg in mensagens_gerais %}
+                    <li class="mensagem-item {% if msg.is_atencao %}atencao{% endif %}"
+                        data-id="{{ msg.pk }}" data-remetente="{{ msg.remetente.username }}" data-remetente-id="{{ msg.remetente.pk }}"
+                        data-data="{{ msg.data_envio|date:'d/m/Y H:i' }}" data-conteudo="{{ msg.conteudo }}">
+                        <p class="conteudo">{{ msg.conteudo|truncatechars:50 }}</p>
+                        <small>De: {{ msg.remetente.username }} - {{ msg.data_envio|timesince }} atrás</small>
+                    </li>
+                {% empty %}
+                    <li class="sem-resultados">Nenhuma mensagem geral.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="dashboard-card card-grafico-downloads">
+            <div class="card-header"><i class="fas fa-file-download"></i><h3>Tipos de Download Disponíveis</h3></div>
+            <div class="chart-container-pie"><canvas id="graficoDownloads"></canvas></div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-mensagem" class="modal-overlay">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/mensagem.js' %}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gráfico de Linhas (Crescimento)
+            const lineCtx = document.getElementById('graficoCrescimento');
+            if (lineCtx) {
+                const growthLabels = JSON.parse('{{ growth_chart_labels|safe }}');
+                const growthData = JSON.parse('{{ growth_chart_data|safe }}');
+                new Chart(lineCtx, { type: 'line', data: { labels: growthLabels, datasets: [{ label: 'Novos Cadastros', data: growthData, fill: true, borderColor: 'rgb(0, 82, 204)', backgroundColor: 'rgba(0, 82, 204, 0.1)', tension: 0.3 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } } });
+            }
+
+            // Gráfico de Barras (Averbações)
+            const barCtx = document.getElementById('graficoAverbacoes');
+            if (barCtx) {
+                const barLabels = JSON.parse('{{ bar_chart_labels|safe }}');
+                const barData = JSON.parse('{{ bar_chart_data|safe }}');
+                 if (barData.some(d => d > 0)) {
+                    new Chart(barCtx, { type: 'bar', data: { labels: barLabels, datasets: [{ label: 'Nº de Averbações', data: barData, backgroundColor: ['rgba(0, 82, 204, 0.7)', 'rgba(255, 102, 0, 0.7)'], borderColor: ['#0052cc', '#ff6600'], borderWidth: 1 }] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }, plugins: { legend: { display: false } } } });
+                } else { barCtx.parentElement.innerHTML = '<p class="sem-resultados" style="padding-top: 5rem;">Sem dados para exibir o gráfico.</p>'; }
+            }
+
+            // Gráfico de Pizza (Downloads)
+            const downloadsCtx = document.getElementById('graficoDownloads');
+            if (downloadsCtx) {
+                const downloadsLabels = JSON.parse('{{ downloads_chart_labels|safe }}');
+                const downloadsData = JSON.parse('{{ downloads_chart_data|safe }}');
+                if (downloadsData.some(d => d > 0)) {
+                    new Chart(downloadsCtx, { type: 'pie', data: { labels: downloadsLabels, datasets: [{ label: 'Nº de Arquivos', data: downloadsData, backgroundColor: ['#6f42c1', '#20c997', '#fd7e14'] }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } } });
+                } else { downloadsCtx.parentElement.innerHTML = '<p class="sem-resultados" style="padding-top: 5rem;">Nenhum arquivo para download.</p>'; }
+            }
+        });
+    </script>
+{% endblock %}

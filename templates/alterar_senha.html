@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Alterar Senha - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cadastro_funcionario.css' %}">
+    <link rel="stylesheet" href="{% static 'css/alterar_senha.css' %}">
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="form-card" style="max-width: 600px; margin: 2rem auto;">
+        <h2>Alterar Minha Senha</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="form-errors" style="background-color: #f8d7da; color: #721c24; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <p>Por favor, corrija os erros abaixo.</p>
+                </div>
+            {% endif %}
+
+            <div class="form-field full-width">
+                {{ form.old_password.label_tag }}
+                {{ form.old_password }}
+                {{ form.old_password.errors }}
+            </div>
+            <div class="form-field full-width">
+                {{ form.new_password1.label_tag }}
+                {{ form.new_password1 }}
+                {{ form.new_password1.errors }}
+            </div>
+            
+            <div class="password-strength-meter">
+                <div class="strength-bar">
+                    <div class="strength-bar-fill" id="strength-bar-fill"></div>
+                </div>
+                <ul class="password-requirements">
+                    <li id="req-length">Pelo menos 8 caracteres</li>
+                    <li id="req-lowercase">Uma letra minúscula</li>
+                    <li id="req-uppercase">Uma letra maiúscula</li>
+                    <li id="req-number">Um número</li>
+                    <li id="req-special">Um caractere especial (!@#$%^&*)</li>
+                </ul>
+            </div>
+            <div class="form-field full-width">
+                {{ form.new_password2.label_tag }}
+                {{ form.new_password2 }}
+                {{ form.new_password2.errors }}
+            </div>
+
+            <button type="submit" style="width: 100%; margin-top: 1rem;">Salvar Nova Senha</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/alterar_senha.js' %}"></script>
+{% endblock %}

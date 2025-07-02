@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Consulta de Funcionários - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_funcionarios.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% include 'partials/_alerta_lgpd.html' %}
+
+    <div class="consulta-card">
+        <h2>Consulta de Funcionários</h2>
+
+        <form method="get" class="form-busca">
+            <input type="text" name="q" placeholder="Digite o nome do funcionário..." value="{{ query|default:'' }}">
+            <button type="submit">Localizar</button>
+        </form>
+
+        <div class="lista-funcionarios">
+            {% for funcionario in funcionarios %}
+                <div class="funcionario-item">
+                    <div class="funcionario-header">
+                        <span class="info-resumida">
+                            <strong>Nome:</strong> {{ funcionario.nome }} - <strong>Setor:</strong> {{ funcionario.setor }}
+                        </span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+
+                    <div class="funcionario-detalhes">
+                        {% if funcionario.foto %}
+                            <img src="{{ funcionario.foto.url }}" alt="Foto de {{ funcionario.nome }}" class="foto-funcionario">
+                        {% endif %}
+                        <div class="detalhes-grid">
+                            <p><strong>Nome Completo:</strong> {{ funcionario.nome }}</p>
+                            <p><strong>Data de Nascimento:</strong> {{ funcionario.data_nascimento|date:"d/m/Y" }}</p>
+                            <p><strong>CPF:</strong> {{ funcionario.cpf }}</p>
+                            <p><strong>RG:</strong> {{ funcionario.rg }}</p>
+                            <p><strong>Data de Exped.:</strong> {{ funcionario.data_expedicao|date:"d/m/Y" }}</p>
+                            <p><strong>Órgão de Exped.:</strong> {{ funcionario.orgao_expedicao }}</p>
+                            <p><strong>UF:</strong> {{ funcionario.get_uf_display }}</p>
+                            <p><strong>Endereço:</strong> {{ funcionario.endereco }}</p>
+                            <p><strong>Tel. Pessoal:</strong> {{ funcionario.telefone_pessoal }}</p>
+                            <p><strong>Tel. Corporativo:</strong> {{ funcionario.telefone_corporativo|default:"N/A" }}</p>
+                            <p><strong>E-mail Corp.:</strong> {{ funcionario.email_corporativo|default:"N/A" }}</p>
+                            <p><strong>Setor:</strong> {{ funcionario.setor }}</p>
+                            <p><strong>Função:</strong> {{ funcionario.funcao }}</p>
+                            <p><strong>Contrato:</strong> {{ funcionario.get_tipo_contrato_display }}</p>
+                            <p><strong>Anotações:</strong> {{ funcionario.anotacoes|default:"Nenhuma" }}</p>
+                            {% if funcionario.telefone_corporativo %}
+                                <p class="full-width-p">
+                                    <a href="{{ funcionario.whatsapp_link }}" class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
+                                        <i class="fab fa-whatsapp"></i> Conversar no WhatsApp
+                                    </a>
+                                </p>
+                            {% endif %}
+                            <div class="botoes-acao full-width-p">
+                                <a href="{% url 'APP:editar_funcionario' pk=funcionario.pk %}" class="btn-editar">Editar Cadastro</a>
+                                <a href="{% url 'APP:excluir_funcionario' pk=funcionario.pk %}" class="btn-excluir">Excluir Cadastro</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum funcionário encontrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/listar_funcionarios.js' %}"></script>
+{% endblock %}

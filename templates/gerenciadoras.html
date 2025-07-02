@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Gerenciadoras de Risco - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gestao_seguros.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gerenciadoras.css' %}">
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Gerenciadoras de Risco</h2>
+            {% if user.is_superuser %}
+                <button id="toggle-form-btn" class="btn-principal">+ Adicionar GR</button>
+            {% endif %}
+        </div>
+        
+        <div id="inline-form-container" class="inline-form-container" style="display: none;">
+            <h3>Cadastrar Nova Gerenciadora</h3>
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="modal-form-row">
+                        {{ field.label_tag }}
+                        {{ field }}
+                    </div>
+                    {% if field.errors %}
+                        <div class="form-errors" style="grid-column: 2;">{{ field.errors }}</div>
+                    {% endif %}
+                {% endfor %}
+                <div class="form-actions">
+                    <button type="submit" class="btn-principal">Salvar</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="lista-itens">
+            {% for gr in gerenciadoras %}
+                <div class="item-container">
+                    <div class="item-header">
+                        <span class="info-resumida"><strong>Gerenciadora:</strong> {{ gr.nome }}</span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <div class="detalhes-flex-container">
+                            <div class="detalhes-coluna">
+                                <h4><i class="fas fa-user-shield"></i> Pesquisa de Condutor</h4>
+                                <p><strong>CLT:</strong> {{ gr.validade_condutor_clt }} meses</p>
+                                <p><strong>Agregado:</strong> {{ gr.validade_condutor_agregado }} meses</p>
+                                <p><strong>Terceiro:</strong> {{ gr.validade_condutor_terceiro }}</p>
+                            </div>
+                            <div class="detalhes-coluna">
+                                <h4><i class="fas fa-truck"></i> Pesquisa de Veículo</h4>
+                                <p><strong>Frota:</strong> {{ gr.validade_veiculo_frota }} meses</p>
+                                <p><strong>Agregado:</strong> {{ gr.validade_veiculo_agregado }} meses</p>
+                                <p><strong>Terceiro:</strong> {{ gr.validade_veiculo_terceiro }}</p>
+                            </div>
+                            <div class="detalhes-coluna">
+                                <h4><i class="fas fa-clipboard-check"></i> Checklist de Veículo</h4>
+                                <p><strong>Frota:</strong> {{ gr.validade_checklist_frota }} dias</p>
+                                <p><strong>Agregado:</strong> {{ gr.validade_checklist_agregado }} dias</p>
+                                <p><strong>Terceiro:</strong> {{ gr.validade_checklist_terceiro }}</p>
+                            </div>
+                        </div>
+
+                        <div class="observacoes-section">
+                            <h4>Observações Diversas</h4>
+                            <p>{{ gr.observacoes|default:"Nenhuma observação cadastrada." }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhuma gerenciadora de risco cadastrada.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/gerenciadoras.js' %}"></script>
+{% endblock %}

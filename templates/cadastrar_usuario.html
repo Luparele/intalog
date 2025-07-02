@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Cadastrar Usuário - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cadastrar_usuario.css' %}">
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="form-card" style="max-width: 700px;">
+        <h2>Cadastrar Novo Usuário</h2>
+        <p>A senha deve atender aos requisitos de segurança para garantir a proteção da conta.</p>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="form-errors" style="background-color: #f8d7da; color: #721c24; padding: 1rem; border-radius: 4px; margin-bottom: 1rem;">
+                    <p>Por favor, corrija os erros abaixo:</p>
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+                <div class="form-field">
+                    {{ form.username.label_tag }}
+                    {{ form.username }}
+                    <div class="form-errors">{{ form.username.errors }}</div>
+                </div>
+
+                <div class="form-field">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    <div class="form-errors">{{ form.email.errors }}</div>
+                </div>
+
+                <div class="form-field full-width">
+                    {{ form.password1.label_tag }}
+                    {{ form.password1 }}
+                    <div class="form-errors">{{ form.password1.errors }}</div>
+                </div>
+
+                <div class="form-field full-width">
+                    <div class="password-strength-meter">
+                        <div class="strength-bar"><div id="strength-bar-fill"></div></div>
+                        <ul class="password-requirements">
+                            <li id="req-length">Pelo menos 8 caracteres</li>
+                            <li id="req-lowercase">Uma letra minúscula</li>
+                            <li id="req-uppercase">Uma letra maiúscula</li>
+                            <li id="req-number">Um número</li>
+                            <li id="req-special">Um caractere especial</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="form-field full-width">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                    <div class="form-errors">{{ form.password2.errors }}</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-principal">Criar Usuário</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // O formulário de criação de usuário do Django usa o id 'id_password1'
+            const passwordInput = document.getElementById('id_password1');
+            const strengthBarFill = document.getElementById('strength-bar-fill');
+            
+            const requirements = {
+                length: document.getElementById('req-length'),
+                lowercase: document.getElementById('req-lowercase'),
+                uppercase: document.getElementById('req-uppercase'),
+                number: document.getElementById('req-number'),
+                special: document.getElementById('req-special')
+            };
+
+            const regex = {
+                lowercase: /[a-z]/,
+                uppercase: /[A-Z]/,
+                number: /[0-9]/,
+                special: /[^A-Za-z0-9]/
+            };
+
+            if (passwordInput) {
+                passwordInput.addEventListener('input', function() {
+                    const password = this.value;
+                    let score = 0;
+
+                    // Verifica cada requisito e atualiza a classe da lista
+                    if (password.length >= 8) { requirements.length.classList.add('valid'); score++; } 
+                    else { requirements.length.classList.remove('valid'); }
+
+                    if (regex.lowercase.test(password)) { requirements.lowercase.classList.add('valid'); score++; } 
+                    else { requirements.lowercase.classList.remove('valid'); }
+
+                    if (regex.uppercase.test(password)) { requirements.uppercase.classList.add('valid'); score++; } 
+                    else { requirements.uppercase.classList.remove('valid'); }
+
+                    if (regex.number.test(password)) { requirements.number.classList.add('valid'); score++; } 
+                    else { requirements.number.classList.remove('valid'); }
+
+                    if (regex.special.test(password)) { requirements.special.classList.add('valid'); score++; } 
+                    else { requirements.special.classList.remove('valid'); }
+                    
+                    // Atualiza a barra de força
+                    updateStrengthBar(score);
+                });
+            }
+
+            function updateStrengthBar(score) {
+                strengthBarFill.className = 'strength-bar-fill'; // Reseta as classes de cor
+
+                if (score <= 1) { strengthBarFill.style.width = '20%'; strengthBarFill.classList.add('weak'); } 
+                else if (score === 2) { strengthBarFill.style.width = '40%'; strengthBarFill.classList.add('weak'); } 
+                else if (score === 3) { strengthBarFill.style.width = '60%'; strengthBarFill.classList.add('medium'); } 
+                else if (score === 4) { strengthBarFill.style.width = '80%'; strengthBarFill.classList.add('strong'); } 
+                else if (score === 5) { strengthBarFill.style.width = '100%'; strengthBarFill.classList.add('very-strong'); } 
+                else { strengthBarFill.style.width = '0%'; }
+            }
+        });
+    </script>
+{% endblock %}

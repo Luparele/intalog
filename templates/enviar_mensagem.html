@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Enviar Mensagem - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/enviar_mensagem.css' %}">
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <h2>Enviar Nova Mensagem</h2>
+        
+        <form method="post" class="form-padronizado">
+            {% csrf_token %}
+            <div class="form-field">
+                {{ form.tipo_destinatario.label_tag }}
+                {{ form.tipo_destinatario }}
+            </div>
+            <div class="form-field" id="destinatario-usuario-field">
+                {{ form.destinatario_usuario.label_tag }}
+                {{ form.destinatario_usuario }}
+            </div>
+            <div class="form-field">
+                {{ form.conteudo.label_tag }}
+                {{ form.conteudo }}
+            </div>
+            <div class="form-field checkbox-group">
+                {{ form.is_atencao }}
+                {{ form.is_atencao.label_tag }}
+            </div>
+            <button type="submit" class="btn-principal">Enviar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tipoSelect = document.getElementById('id_tipo_destinatario');
+            const usuarioField = document.getElementById('destinatario-usuario-field');
+
+            function toggleUsuarioField() {
+                usuarioField.style.display = tipoSelect.value === 'DIRECT' ? 'block' : 'none';
+            }
+            toggleUsuarioField();
+            
+            tipoSelect.addEventListener('change', toggleUsuarioField);
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Confirmar Exclusão - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_funcionarios.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="consulta-card">
+    <h2>Confirmar Exclusão</h2>
+    <p>Você tem certeza que deseja excluir o cliente <strong>{{ cliente.cliente }}</strong> e todas as suas regras de embarque associadas?</p>
+    <p><strong>Esta ação não pode ser desfeita.</strong></p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn-excluir">Sim, excluir permanentemente</button>
+        <a href="{% url 'APP:consultar_clientes' %}" class="btn-cancelar">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Averbações - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/averbacoes.css' %}">
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="content-card">
+        <div class="cabecalho-pagina">
+            <h2>Gestão de Averbações</h2>
+            {% if user.is_superuser %}
+            <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Averbação</button>
+            {% endif %}
+        </div>
+
+        <div class="resumo-grid">
+            <div class="resumo-card">
+                <h4>Resumo Geral</h4>
+                <ul class="resumo-lista">
+                    <li>
+                        <span>Total de Cadastros</span>
+                        <strong>{{ total_count }}</strong>
+                    </li>
+                    <li>
+                        <span>DDR/Carta Conforto</span>
+                        <strong>{{ ddr_count }}</strong>
+                    </li>
+                    <li>
+                        <span>Averbado Intalog</span>
+                        <strong>{{ intalog_count }}</strong>
+                    </li>
+                </ul>
+            </div>
+            <div class="resumo-card">
+                <h4>Distribuição por Tipo</h4>
+                <div class="chart-container">
+                    <canvas id="graficoAverbacoes"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabela-container">
+            <table class="tabela-padrao">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>CNPJ</th>
+                        <th>Tipo de Seguro</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in averbacoes %}
+                        <tr>
+                            <td>{{ item.cliente_nome }}</td>
+                            <td>{{ item.cnpj }}</td>
+                            <td>{{ item.get_tipo_seguro_display }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3" class="sem-resultados">Nenhuma averbação cadastrada.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="modal-averbacao" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Cadastrar Nova Averbação</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+                {{ form.as_p }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" class="btn-principal">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script id="chart-data" type="application/json">
+        {
+            "labels": {{ chart_labels|safe }},
+            "data": {{ chart_data|safe }}
+        }
+    </script>
+    <script src="{% static 'js/averbacoes.js' %}"></script>
+{% endblock %}

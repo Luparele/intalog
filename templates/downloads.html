@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Downloads - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/downloads.css' %}">
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="download-card">
+        <h2>Central de Downloads</h2>
+        <p>Acesse os documentos e apólices cadastrados no sistema.</p>
+
+        <div class="categoria-container">
+            <h3><i class="fas fa-file-alt"></i> Documentos PGR de Clientes</h3>
+            <ul class="lista-downloads">
+                {% for cliente in clientes_com_pgr %}
+                    <li>
+                        <span class="nome-arquivo">PGR: {{ cliente.cliente }}</span>
+                        <a href="{{ cliente.pgr_arquivo.url }}" class="btn-download" download>
+                            <i class="fas fa-download"></i> Baixar
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="sem-resultados">Nenhum arquivo PGR encontrado.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="categoria-container">
+            <h3><i class="fas fa-file-contract"></i> Documentos DDR / Carta Conforto</h3>
+            <ul class="lista-downloads">
+                {% for cliente in clientes_com_ddr %}
+                    <li>
+                        <span class="nome-arquivo">DDR: {{ cliente.cliente }}</span>
+                        <a href="{{ cliente.ddr_arquivo.url }}" class="btn-download" download>
+                            <i class="fas fa-download"></i> Baixar
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="sem-resultados">Nenhum arquivo DDR / Carta Conforto encontrado.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="categoria-container">
+            <h3><i class="fas fa-file-shield"></i> Apólices de Seguro</h3>
+            <ul class="lista-downloads">
+                {% for seguro in seguros_com_apolices %}
+                    <li>
+                        <span class="nome-arquivo">{{ seguro }}</span>
+                        <a href="{{ seguro.apolice_anexo.url }}" class="btn-download" download>
+                            <i class="fas fa-download"></i> Baixar
+                        </a>
+                    </li>
+                {% empty %}
+                    <li class="sem-resultados">Nenhuma apólice de seguro com anexo encontrada.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
