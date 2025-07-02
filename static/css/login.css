@@ -1,0 +1,167 @@
+/* static/css/login.css */
+
+body {
+    padding-left: 0 !important; /* Remove o padding da sidebar nesta página */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-page-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* --- LADO DO BRANDING (ESQUERDO) --- */
+.login-branding-side {
+    flex: 1;
+    background: linear-gradient(45deg, var(--azul-royal), #0045a3);
+    color: var(--branco);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.branding-content .logo-icon {
+    font-size: 5rem;
+}
+
+.branding-content h1 {
+    font-size: 3.5rem;
+    margin: 1rem 0 0.5rem;
+    letter-spacing: 2px;
+}
+
+.branding-content p {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+.branding-content .logo-image {
+    width: 500px; /* Ajuste o tamanho conforme necessário */
+    height: auto; /* Mantém a proporção da imagem */
+    margin-bottom: 1rem;
+}
+
+/* --- LADO DO FORMULÁRIO (DIREITO) --- */
+.login-form-side {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background-color: #DE6A2E; /* Nova cor */
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 2.5rem;
+    background: var(--branco);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.login-box h2 {
+    text-align: center;
+    color: var(--cinza-escuro);
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+/* Estilos para os campos com ícones */
+.input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 12px 12px 45px; /* Padding esquerdo para o ícone */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--azul-royal);
+}
+
+.login-box button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--azul-royal);
+    color: var(--branco);
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.login-box button[type="submit"]:hover {
+    background-color: #0045a3;
+}
+
+/* Estilo para a mensagem de erro */
+.form-errors {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+.form-errors p { margin: 0; }
+
+.btn-whatsapp-solicitacao {
+    display: block;
+    margin-top: 2rem;
+    text-align: center;
+    background-color: #25D366;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-whatsapp-solicitacao:hover {
+    background-color: #1DA851;
+}
+
+/* Esconde o lado do branding em telas pequenas */
+@media (max-width: 768px) {
+    .login-branding-side {
+        display: none;
+    }
+}
+
+.extra-links {
+    text-align: right;
+    margin-top: 1rem;
+}
+
+.forgot-password-link {
+    font-size: 0.9rem;
+    color: var(--azul-royal);
+    text-decoration: none;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}

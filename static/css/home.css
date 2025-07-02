@@ -1,0 +1,6 @@
+/* static/css/home.css */
+main h2 {
+    color: var(--azul-royal);
+    border-bottom: 2px solid var(--laranja-intalog);
+    padding-bottom: 10px;
+}

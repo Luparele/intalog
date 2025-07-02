@@ -1,0 +1,110 @@
+/* static/css/averbacoes.css */
+
+/* Estilos para o card, cabeçalho e modal (reutilizados) */
+@import url("gestao_seguros.css");
+
+/* --- ESTILOS PARA OS CARDS DE ESTATÍSTICAS E GRÁFICO --- */
+.resumo-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+@media (min-width: 992px) {
+    .resumo-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.resumo-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 1.5rem;
+    border-radius: 8px;
+    /* Centraliza o conteúdo verticalmente */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.resumo-card h4 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: var(--cinza-escuro);
+    text-align: center;
+    font-size: 1.3rem; /* Fonte aumentada */
+}
+
+.resumo-lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.resumo-lista li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+.resumo-lista li:last-child {
+    border-bottom: none;
+}
+.resumo-lista li span {
+    color: #495057;
+    font-size: 1.1rem; /* Fonte aumentada */
+}
+.resumo-lista li strong {
+    font-size: 1.8rem; /* Fonte aumentada */
+    color: var(--azul-royal);
+}
+
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 250px;
+    margin: auto;
+    aspect-ratio: 1 / 1;
+}
+
+
+/* --- Tabela de Averbações --- */
+.tabela-container { 
+    overflow-x: auto;
+    max-width: 1000px;
+    margin: 2rem auto; /* Margem no topo e na base */
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+.tabela-padrao {
+    width: 100%;
+    border-collapse: collapse;
+}
+.tabela-padrao th, .tabela-padrao td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+.tabela-padrao tr:last-child td {
+    border-bottom: none;
+}
+.tabela-padrao thead th {
+    background-color: var(--azul-royal);
+    color: var(--branco);
+}
+.tabela-padrao tbody tr {
+    transition: background-color 0.15s ease-in-out;
+}
+.tabela-padrao tbody tr:hover {
+    background-color: #f5f5f5;
+}
+/* Largura das Colunas */
+.tabela-padrao th:nth-child(1), .tabela-padrao td:nth-child(1) { width: 50%; }
+.tabela-padrao th:nth-child(2), .tabela-padrao td:nth-child(2) { width: 25%; }
+.tabela-padrao th:nth-child(3), .tabela-padrao td:nth-child(3) { width: 25%; }
+.sem-resultados {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+}

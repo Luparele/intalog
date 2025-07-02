@@ -1,0 +1,216 @@
+/* ==========================================================================
+   1. CONFIGURAÇÕES GLOBAIS E VARIÁVEIS
+   ========================================================================== */
+
+:root {
+    --azul-royal: #0052cc;
+    --laranja-intalog: #ff6600;
+    --branco: #ffffff;
+    --cinza-claro: #f0f2f5;
+    --cinza-escuro: #333333;
+    --sombra: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --navbar-width-retraida: 80px;
+    --navbar-width-expandida: 250px;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: var(--cinza-claro);
+    padding-left: var(--navbar-width-retraida);
+    transition: padding-left 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    padding: 0rem;
+    flex-grow: 1; 
+}
+
+.main-content-container {
+    padding: 0 2rem; /* Adiciona 2rem de espaçamento apenas nas laterais */
+}
+
+/* ==========================================================================
+   2. ESTILOS DA NAVBAR (SIDEBAR)
+   ========================================================================== */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: var(--navbar-width-retraida);
+    background-color: var(--azul-royal);
+    box-shadow: var(--sombra);
+    z-index: 1000;
+    overflow: hidden;
+    transition: width 0.3s ease;
+}
+
+.sidebar:hover {
+    width: var(--navbar-width-expandida);
+}
+
+.sidebar ul { list-style: none; padding: 0; margin: 0; height: 100%; display: flex; flex-direction: column; }
+.sidebar li { width: 100%; }
+.sidebar a { display: flex; align-items: center; height: 60px; color: var(--branco); text-decoration: none; white-space: nowrap; padding: 0 25px; transition: background-color 0.2s; }
+.sidebar a:hover { background-color: var(--laranja-intalog); }
+.sidebar .link-text { opacity: 0; pointer-events: none; margin-left: 20px; transition: opacity 0.2s ease; }
+.sidebar:hover .link-text { opacity: 1; pointer-events: auto; transition-delay: 0.1s; }
+.sidebar a .fas, .sidebar a .fab { font-size: 1.5rem; min-width: 30px; text-align: center; }
+.sidebar.sidebar-clicked:hover { width: var(--navbar-width-retraida); }
+
+/* ==========================================================================
+   3. ESTILOS DO BOTÃO DE LOGOUT
+   ========================================================================== */
+
+.logout-form { margin: 0; }
+.logout-button {
+    background: none; border: none; padding: 0; margin: 0; font: inherit; cursor: pointer; outline: inherit; text-align: left;
+    width: 100%; display: flex; align-items: center; height: 60px; color: var(--branco); text-decoration: none; white-space: nowrap; padding: 0 25px; transition: background-color 0.2s;
+}
+.logout-button:hover { background-color: var(--laranja-intalog); }
+
+/* ==========================================================================
+   4. ESTILOS DO FOOTER
+   ========================================================================== */
+
+footer { background-color: var(--cinza-escuro); color: var(--cinza-claro); padding: 3rem 2rem 1.5rem; margin-top: auto; border-top: 5px solid var(--laranja-intalog);}
+.footer-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap;}
+.footer-col { flex: 1; min-width: 250px;}
+.footer-col h3, .footer-col h4 { color: var(--branco); margin-top: 0; margin-bottom: 1.5rem; position: relative; }
+.footer-col h4::after { content: ''; position: absolute; left: 0; bottom: -8px; width: 40px; height: 2px; background-color: var(--laranja-intalog); }
+.footer-col p { margin-bottom: 1rem; line-height: 1.6; }
+.footer-col ul { list-style: none; padding: 0; margin: 0; }
+.footer-col li { margin-bottom: 0.8rem; }
+.footer-col a { color: var(--cinza-claro); text-decoration: none; transition: color 0.2s, padding-left 0.2s; }
+.footer-col a:hover { color: var(--laranja-intalog); padding-left: 5px; }
+.footer-col li .fas { margin-right: 10px; color: var(--laranja-intalog); width: 20px; text-align: center; }
+
+/* ==========================================================================
+   5. ESTILOS DAS MENSAGENS (ALERTS)
+   ========================================================================== */
+
+.messages-container { margin-bottom: 1.5rem; }
+.message { padding: 15px 20px; border-radius: 4px; border: 1px solid transparent; margin-bottom: 1rem; position: relative; font-weight: bold; }
+.message.success { color: #0f5132; background-color: #d1e7dd; border-color: #badbcc; }
+.message.error { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
+.message.warning { color: #664d03; background-color: #fff3cd; border-color: #ffecb5; }
+.close-message { position: absolute; top: 10px; right: 15px; font-size: 2rem; line-height: 1; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
+.close-message:hover { opacity: 1; }
+
+/* ==========================================================================
+   6. COMPONENTES REUTILIZÁVEIS (BOTÃO WHATSAPP)
+   ========================================================================== */
+
+.btn-whatsapp {
+    display: inline-block;
+    background-color: #25D366;
+    color: white !important;
+    padding: 10px 20px; /* Padding igual aos outros botões de ação */
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center; /* Garante alinhamento consistente */
+    transition: background-color 0.2s;
+}
+
+.btn-whatsapp:hover {
+    background-color: #1DA851;
+}
+
+.btn-whatsapp .fab {
+    margin-right: 8px;
+    font-size: 1.1rem;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+   7. ALERTA LGPD
+   ========================================================================== */
+   
+.lgpd-alert { display: flex; align-items: center; padding: 1rem 1.5rem; margin-bottom: 2rem; border-radius: 8px; position: relative; color: #664d03; background-color: #fff3cd; border: 1px solid #ffecb5; }
+.lgpd-alert .icon { font-size: 2rem; margin-right: 1.5rem; }
+.lgpd-alert .text p { margin: 0.5rem 0 0; }
+.lgpd-alert .close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; line-height: 1; cursor: pointer; opacity: 0.6; transition: opacity 0.2s; }
+.lgpd-alert .close-btn:hover { opacity: 1; }
+
+/*------------------------------------*\
+    #ESTILOS DO BANNER SUPERIOR
+\*------------------------------------*/
+
+.top-banner {
+    width: 100%;
+    padding: 1rem 0; /* Padding vertical um pouco menor */
+    text-align: center;
+    background-color: var(--azul-royal); /* Cor de fundo alterada para combinar com a sidebar */
+    margin-bottom: 2rem;
+}
+
+.top-banner img {
+    max-height: 40px; /* Tamanho do logo reduzido */
+    width: auto;
+    /* filter: brightness(0) invert(1); */ /* Transforma o logo em branco */
+}
+
+/* ==========================================================================
+   3. ESTILOS GLOBAIS DE MODAL (COM LAYOUT HARMONIOSO)
+   ========================================================================== */
+
+.modal-content {
+    max-width: 800px;
+}
+
+.modal-form-row {
+    display: grid;
+    /* Coluna do rótulo com 200px e a do campo preenche o resto */
+    grid-template-columns: 200px 1fr; 
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.modal-form-row label {
+    font-weight: bold;
+    text-align: right;
+    padding-right: 1rem;
+    color: var(--cinza-escuro);
+}
+
+/* Estilo flexível para os campos */
+.modal-form-row input,
+.modal-form-row select,
+.modal-form-row textarea {
+    width: 100%; /* Ocupa 100% da sua coluna no grid */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal-form-row input:focus,
+.modal-form-row select:focus,
+.modal-form-row textarea:focus {
+    outline: none;
+    border-color: var(--laranja-intalog);
+}
+
+.modal-form-row textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+
+/* --- Restante do seu style.css --- */
+
+/* Sidebar */
+.sidebar { position: fixed; top: 0; left: 0; height: 100vh; width: var(--navbar-width-retraida); background-color: var(--azul-royal); box-shadow: var(--sombra); z-index: 1000; overflow: hidden; transition: width 0.3s ease; }
+.sidebar:hover { width: var(--navbar-width-expandida); }
+.sidebar ul { list-style: none; padding: 0; margin: 0; height: 100%; display: flex; flex-direction: column; }
+.sidebar li { width: 100%; }
+/* ... e assim por diante para todos os outros estilos que já criamos ... */

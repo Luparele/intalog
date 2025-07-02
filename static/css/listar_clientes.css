@@ -1,0 +1,136 @@
+/* D:\Python\Intalog\static\css\listar_clientes.css */
+
+.consulta-card {
+    background-color: var(--branco);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--sombra);
+}
+
+.consulta-card h2 {
+    color: var(--azul-royal);
+    border-bottom: 2px solid var(--laranja-intalog);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.form-busca {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.form-busca input { flex-grow: 1; padding: 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+.form-busca button { background-color: var(--laranja-intalog); color: var(--branco); border: none; padding: 0 24px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+
+.item-container {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+}
+
+.item-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.item-header:hover {
+    background-color: #efefef;
+}
+
+.item-header .info-resumida {
+    flex-grow: 1;
+    font-size: 1.1rem;
+}
+
+.btn-visualizar {
+    background-color: var(--azul-royal);
+    color: var(--branco);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.item-detalhes {
+    display: none;
+    padding: 1.5rem;
+    background-color: #fff;
+}
+
+.detalhes-secao {
+    margin-bottom: 1.5rem;
+}
+
+.detalhes-secao:last-child {
+    margin-bottom: 0;
+}
+
+.detalhes-secao h4 {
+    margin-top: 0;
+    color: var(--azul-royal);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.detalhes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+/* === MUDANÇA IMPORTANTE ABAIXO === */
+.detalhes-grid p {
+    margin: 0;
+    padding: 0.5rem;
+    /* REMOVEMOS a cor de fundo daqui para que o fundo do card apareça */
+    /* background-color: #f7f7f7; */
+    border-radius: 4px;
+}
+.detalhes-grid p strong {
+    color: var(--cinza-escuro);
+}
+
+.full-width-p {
+    grid-column: 1 / -1;
+}
+
+/* === SEÇÃO CORRIGIDA PARA AS REGRAS DE EMBARQUE === */
+
+.regra-item {
+    border: 1px solid #e0e0e0;
+    border-left: 4px solid var(--laranja-intalog);
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+    grid-column: 1 / -1;
+}
+
+/* Regra final para alternar as cores dos CARDS */
+.regras-container .regra-item:nth-child(even) {
+    background-color: #fde3ca; /* Cinza bem claro para itens pares */
+}
+.regras-container .regra-item:nth-child(odd) {
+    background-color: rgb(192, 214, 236); /* Branco para itens ímpares */
+}
+
+.regra-item h5 {
+    margin-top: 0;
+    color: var(--cinza-escuro);
+}
+
+/* === FIM DA SEÇÃO CORRIGIDA === */
+
+.botoes-acao { margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1.5rem; display: flex; gap: 1rem; }
+.btn-editar, .btn-excluir, .btn-cancelar { display: inline-block; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; transition: background-color 0.2s; }
+.btn-editar { background-color: var(--azul-royal); }
+.btn-editar:hover { background-color: #0041a3; }
+.btn-excluir { background-color: #dc3545; }
+.btn-excluir:hover { background-color: #c82333; }
+.btn-cancelar { background-color: #6c757d; }
+.btn-cancelar:hover { background-color: #5a6268; }
+.sem-resultados { text-align: center; padding: 2rem; color: #777; }

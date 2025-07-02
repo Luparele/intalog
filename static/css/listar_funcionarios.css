@@ -1,0 +1,169 @@
+.consulta-card {
+    background-color: var(--branco);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--sombra);
+}
+
+.consulta-card h2 {
+    color: var(--azul-royal);
+    border-bottom: 2px solid var(--laranja-intalog);
+    padding-bottom: 10px;
+    margin-top: 0;
+}
+
+.form-busca {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.form-busca input {
+    flex-grow: 1; /* O campo de texto ocupa o espaço restante */
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+.form-busca button {
+    background-color: var(--laranja-intalog);
+    color: var(--branco);
+    border: none;
+    padding: 0 24px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.funcionario-item {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    overflow: hidden; /* Garante que o border-radius funcione bem */
+}
+
+.funcionario-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f9f9f9;
+}
+
+.funcionario-header .info-resumida {
+    flex-grow: 1; /* Faz este elemento ocupar todo o espaço disponível, empurrando o botão para a direita */
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.btn-visualizar {
+    background-color: var(--azul-royal);
+    color: var(--branco);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.funcionario-detalhes {
+    display: none; /* COMEÇA OCULTO */
+    padding: 1.5rem;
+    border-top: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.detalhes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+}
+
+.detalhes-grid p {
+    margin: 0;
+    padding: 0.5rem;
+    background-color: #f7f7f7;
+    border-radius: 4px;
+}
+
+.foto-funcionario {
+    max-width: 150px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    float: left;
+    margin-right: 1.5rem;
+}
+
+.sem-resultados {
+    text-align: center;
+    padding: 2rem;
+    color: #777;
+}
+
+/* Regra para o parágrafo do botão ocupar a largura toda no grid */
+.full-width-p {
+    grid-column: 1 / -1; /* Ocupa do início ao fim do grid */
+    text-align: left;
+}
+
+.btn-whatsapp {
+    display: inline-block;
+    background-color: #25D366; /* Cor oficial do WhatsApp */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.btn-whatsapp:hover {
+    background-color: #1DA851; /* Tom mais escuro para o hover */
+}
+
+/* Ícone do Font Awesome dentro do botão */
+.btn-whatsapp .fab {
+    margin-right: 8px;
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.botoes-acao {
+    margin-top: 1.5rem;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-editar, .btn-excluir, .btn-cancelar {
+    display: inline-block;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.btn-editar {
+    background-color: var(--azul-royal);
+}
+.btn-editar:hover {
+    background-color: #0041a3;
+}
+
+.btn-excluir {
+    background-color: #dc3545; /* Vermelho perigo */
+}
+.btn-excluir:hover {
+    background-color: #c82333;
+}
+
+.btn-cancelar {
+    background-color: #6c757d; /* Cinza */
+}
+.btn-cancelar:hover {
+    background-color: #5a6268;
+}

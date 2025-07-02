@@ -1,0 +1,81 @@
+/* Reutiliza os estilos base do formulário de funcionário */
+@import url("cadastro_funcionario.css");
+
+fieldset {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+legend {
+    padding: 0 0.5rem;
+    font-weight: bold;
+    color: var(--azul-royal);
+    font-size: 1.2rem;
+}
+
+.regra-embarque-form {
+    border: 1px solid var(--laranja-intalog);
+    background-color: #fffaf5;
+    padding: 1.5rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.regra-embarque-form h4 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+    color: var(--cinza-escuro);
+}
+
+.checkbox-group strong {
+    margin-right: 1rem;
+}
+
+.checkbox-group label {
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: normal; /* Sobrescreve o bold padrão do label */
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.btn-secondary {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: #6c757d; /* Cinza */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    transition: background-color 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+.btn-principal {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--laranja-intalog);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}

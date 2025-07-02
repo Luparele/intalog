@@ -1,0 +1,67 @@
+/* static/css/alterar_senha.css */
+
+.password-strength-meter {
+    margin-top: -1rem; /* Puxa para mais perto do campo de senha */
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+}
+
+.strength-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e9ecef;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.strength-bar-fill {
+    height: 100%;
+    width: 0; /* Começa com largura 0 */
+    border-radius: 5px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+/* Cores da barra de força */
+.strength-bar-fill.weak { background-color: #dc3545; } /* Vermelho */
+.strength-bar-fill.medium { background-color: #ffc107; } /* Amarelo */
+.strength-bar-fill.strong { background-color: #28a745; } /* Verde */
+.strength-bar-fill.very-strong { background-color: #208637; } /* Verde Escuro */
+
+
+.password-requirements {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9rem;
+    color: #6c757d; /* Cinza */
+}
+
+.password-requirements li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s ease;
+}
+
+/* Ícone de 'X' antes de cada requisito */
+.password-requirements li::before {
+    content: '\2717'; /* Código do caractere X */
+    color: #dc3545; /* Vermelho */
+    position: absolute;
+    left: 0;
+}
+
+/* Estilo para quando o requisito for cumprido */
+.password-requirements li.valid {
+    color: #28a745; /* Verde */
+}
+
+/* Ícone de 'check' para requisitos cumpridos */
+.password-requirements li.valid::before {
+    content: '\2713'; /* Código do caractere check ✓ */
+    color: #28a745; /* Verde */
+}

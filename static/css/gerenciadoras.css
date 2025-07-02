@@ -1,0 +1,80 @@
+/* Importa estilos base que já usamos */
+@import url("gestao_seguros.css");
+
+/* --- NOVO ESTILO PARA O FORMULÁRIO INLINE --- */
+.inline-form-container {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.inline-form-container h3 {
+    margin-top: 0;
+    color: var(--azul-royal);
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.form-actions {
+    text-align: right;
+    margin-top: 1.5rem;
+}
+
+
+/* --- NOVOS ESTILOS PARA OS DETALHES --- */
+.item-detalhes {
+    padding-top: 1rem; /* Adiciona espaço acima dos detalhes */
+}
+
+.detalhes-flex-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que as colunas quebrem em telas pequenas */
+    gap: 2rem; /* Espaço entre as colunas */
+    margin-bottom: 2rem;
+}
+
+.detalhes-coluna {
+    flex: 1; /* Faz cada coluna tentar ocupar o mesmo espaço */
+    min-width: 250px; /* Largura mínima antes de quebrar a linha */
+    max-width: 300px; /* Largura máxima para manter o layout consistente */
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 1.5rem;
+    border-top: 3px solid var(--laranja-intalog);
+}
+
+.detalhes-coluna h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--cinza-escuro);
+    display: flex;
+    align-items: center;
+}
+
+.detalhes-coluna h4 .fas {
+    margin-right: 10px;
+    color: var(--azul-royal);
+}
+
+.detalhes-coluna p {
+    margin: 0.5rem 0;
+    padding-left: 10px;
+    border-left: 2px solid #ddd;
+}
+
+.observacoes-section h4 {
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+}
+
+.observacoes-section p {
+    background-color: #fff3cd;
+    border-left: 3px solid #ffc107;
+    padding: 1rem;
+    margin: 0;
+    line-height: 1.6;
+}
