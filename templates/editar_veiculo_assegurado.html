@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Editar Veículo Assegurado{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cadastro_funcionario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card" style="max-width: 800px; margin: 2rem auto;">
+        <h2>Editar Veículo: {{ veiculo.placa }}</h2>
+        
+        <form method="post" enctype="multipart/form-data" style="margin-top: 2rem;">
+            {% csrf_token %}
+            
+            {{ form.as_p }}
+            
+            <div style="text-align: right; margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                <a href="{% url 'APP:gestao_veiculos_assegurados' %}" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn-principal">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

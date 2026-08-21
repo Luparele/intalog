@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('modal-mensagem');
+    // Se o modal não existe nesta página, o script para aqui.
     if (!modal) return;
 
+    // Pega todos os elementos do modal
     const modalRemetente = document.getElementById('modal-remetente');
     const modalConteudo = document.getElementById('modal-conteudo');
     const modalData = document.getElementById('modal-data');
@@ -9,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnResponder = document.getElementById('modal-btn-responder');
     const fecharBtn = modal.querySelector('.close-modal');
     
-    // Pega o CSRF token de um cookie para as requisições POST via fetch
+    // Função para pegar o CSRF token para requisições seguras
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -28,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let mensagemId = null;
 
+    // Adiciona um "ouvinte" de clique a cada item da lista de mensagens
     document.querySelectorAll('.mensagem-item').forEach(item => {
         item.addEventListener('click', function() {
             // Guarda o ID da mensagem clicada
@@ -35,19 +38,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const remetenteId = this.dataset.remetenteId;
             const isNaoLida = this.classList.contains('nao-lida');
             
-            // Popula o modal com os dados da mensagem
+            // Preenche o modal com os dados do 'data-attribute' do item clicado
             modalRemetente.textContent = this.dataset.remetente;
             modalConteudo.textContent = this.dataset.conteudo;
             modalData.textContent = `Enviada em: ${this.dataset.data}`;
             
-            // Configura o botão de resposta
+            // Configura o botão de resposta com o link correto
             const responderUrl = `/mensagens/enviar/?responder_para=${remetenteId}`;
             btnResponder.href = responderUrl;
 
             // Mostra ou esconde o botão "Marcar como Lida"
             btnLida.style.display = isNaoLida ? 'inline-block' : 'none';
 
-            // Mostra o modal
+            // Finalmente, mostra o modal
             modal.style.display = 'flex';
         });
     });

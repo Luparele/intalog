@@ -1,0 +1,36 @@
+/* static/css/rotogramas.css */
+
+.detalhes-verticais p {
+    margin: 0 0 1rem 0; /* Margem inferior para espaçar as linhas */
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee; /* Linha sutil para separar os itens */
+}
+
+.detalhes-verticais p:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.detalhes-verticais strong {
+    color: var(--cinza-escuro);
+    display: inline-block;
+    width: 80px; /* Alinha os textos à direita dos rótulos */
+}
+
+/* Estilo para o botão de anexo */
+.btn-anexo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #6c757d;
+    color: var(--branco);
+    padding: 8px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background-color 0.2s;
+}
+
+.btn-anexo:hover {
+    background-color: #5a6268;
+}

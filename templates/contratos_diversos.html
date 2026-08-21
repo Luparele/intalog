@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contratos Diversos - Security{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gestao_seguros.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Contratos Diversos</h2>
+            {% if perms.APP.can_add_contrato %}
+            <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Novo Contrato</button>
+            {% endif %}
+        </div>
+
+        <div class="lista-itens">
+            {% for contrato in contratos %}
+                <div class="item-container">
+                    <div class="item-header">
+                        <span class="info-resumida"><strong>Contrato:</strong> {{ contrato.titulo }}</span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <div class="detalhes-grid">
+                            <p><strong>Data de Início:</strong> {{ contrato.data_inicio|date:"d/m/Y"|default:"N/A" }}</p>
+                            <p><strong>Data de Fim:</strong> {{ contrato.data_fim|date:"d/m/Y"|default:"N/A" }}</p>
+                        </div>
+                        <hr>
+                        <h4>Descrição:</h4>
+                        <div class="detalhes-formatados">{{ contrato.descricao|safe }}</div>
+                        {% if contrato.arquivo %}
+                            <div class="anexos-container" style="margin-top: 1rem;">
+                                <strong>Anexo:</strong>
+                                <a href="{{ contrato.arquivo.url }}" target="_blank" class="btn-anexo">
+                                    <i class="fas fa-file-alt"></i> Visualizar Arquivo
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum contrato cadastrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% if perms.APP.can_add_contrato %}
+<div id="modal-contrato" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Adicionar Novo Contrato</h3><span class="close-modal">&times;</span>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-body">{{ form.media }}{{ form.as_p }}</div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" class="btn-principal">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/contratos_diversos.js' %}"></script>
+{% endblock %}

@@ -13,31 +13,52 @@
     <div class="consulta-card">
         <div class="cabecalho-pagina">
             <h2>Gestão de Seguros</h2>
-            {% if user.is_superuser %}
-            <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Novo Seguro</button>
+            
+            {% if perms.APP.can_add_seguro %}
+                <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Novo Seguro</button>
             {% endif %}
         </div>
         
         <div class="lista-itens">
             {% for seguro in seguros %}
-                <div class="item-container">
+                <div class="item-container {{ seguro.status_vencimento }}">
                     <div class="item-header">
                         <span class="info-resumida">
-                            <strong>Apólice:</strong> {{ seguro.tipo_apolice }} - <strong>Vigência:</strong> {{ seguro.vigencia|date:"d/m/Y" }}
+                            <strong>Apólice:</strong> {{ seguro.tipo_apolice }} - <strong>Vigência:</strong> 
+                            {% if seguro.status_vencimento == 'vencido' %}
+                                VENCIDO
+                            {% else %}
+                                {{ seguro.vigencia|date:"d/m/Y" }}
+                            {% endif %}
                         </span>
                         <button class="btn-visualizar">Visualizar</button>
                     </div>
                     <div class="item-detalhes">
                         <div class="detalhes-grid">
-                            <p><strong>Cliente:</strong> {{ seguro.cliente.cliente }}</p>
+                            <p><strong>Seguradora:</strong> {{ seguro.seguradora|default:"N/A" }}</p>
                             <p><strong>Corretora:</strong> {{ seguro.corretora }}</p>
                             <p><strong>Corretor:</strong> {{ seguro.corretor }}</p>
                             <p><strong>Telefone Corretor:</strong> {{ seguro.tel_corretor }}</p>
                             <p><strong>E-mail Corretor:</strong> {{ seguro.email_corretor }}</p>
                             <p><strong>Vigência:</strong> {{ seguro.vigencia|date:"d/m/Y" }}</p>
                             <p class="full-width-p"><strong>Descrição:</strong> {{ seguro.descricao }}</p>
-                            {% if seguro.apolice_anexo %}
-                            <p class="full-width-p"><strong>Apólice Anexada:</strong> <a href="{{ seguro.apolice_anexo.url }}" target="_blank">Ver anexo</a></p>
+                            
+                            {% if perms.APP.can_view_anexos_seguro %}
+                                {% if seguro.apolice_anexo or seguro.certificado_anexo %}
+                                    <div class="anexos-container full-width-p">
+                                        <strong>Anexos:</strong>
+                                        {% if seguro.apolice_anexo %}
+                                            <a href="{{ seguro.apolice_anexo.url }}" target="_blank" class="btn-anexo">
+                                                <i class="fas fa-file-pdf"></i> Ver Apólice
+                                            </a>
+                                        {% endif %}
+                                        {% if seguro.certificado_anexo %}
+                                            <a href="{{ seguro.certificado_anexo.url }}" target="_blank" class="btn-anexo">
+                                                <i class="fas fa-file-certificate"></i> Ver Certificado
+                                            </a>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
                             {% endif %}
                         </div>
                     </div>
@@ -48,6 +69,7 @@
         </div>
     </div>
 
+    {% if perms.APP.can_add_seguro %}
     <div id="modal-seguro" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
@@ -57,7 +79,12 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="modal-body">
-                    {{ form.as_p }}
+                    {% for field in form %}
+                        <div class="modal-form-row">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
@@ -66,6 +93,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 

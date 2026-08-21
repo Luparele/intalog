@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Black-List - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rotogramas.css' %}">
+    <style>
+        .item-container.expandido .item-detalhes {
+            display: block;
+        }
+    </style>
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Black-List</h2>
+            
+            {% if pode_editar %}
+            <a href="{% url 'APP:add_blacklist' %}" class="btn-principal">+ Adicionar Motorista</a>
+            {% endif %}
+        </div>
+        
+        <div class="lista-itens">
+            {% for item in registros %}
+                <div class="item-container">
+                    <div class="item-header" onclick="this.parentElement.classList.toggle('expandido');">
+                        <span class="info-resumida">
+                            <strong>Nome:</strong> {{ item.nome_completo }} | <strong>CPF:</strong> {{ item.cpf }}
+                        </span>
+                        <button class="btn-visualizar">Ver Motivo</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <h4>Detalhes do Bloqueio</h4>
+                        <div class="detalhes-verticais">
+                            <p><strong style="width: 140px;">Motivo:</strong> {{ item.motivo_bloqueio }}</p>
+                            <p><strong style="width: 140px;">Cadastrado em:</strong> {{ item.data_cadastro|date:"d/m/Y H:i" }}</p>
+                            <p><strong style="width: 140px;">Atualizado em:</strong> {{ item.data_atualizacao|date:"d/m/Y H:i" }}</p>
+                        </div>
+                        
+                        {% if pode_editar %}
+                        <div class="botoes-acao">
+                            <a href="{% url 'APP:edit_blacklist' pk=item.pk %}" class="btn-editar">Editar</a>
+                            <a href="{% url 'APP:delete_blacklist' pk=item.pk %}" class="btn-excluir">Excluir</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum registro na Black-List.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const itemHeaders = document.querySelectorAll('.item-header');
+        itemHeaders.forEach(header => {
+            if(!header.onclick){
+                header.addEventListener('click', () => {
+                    header.parentElement.classList.toggle('expandido');
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

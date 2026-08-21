@@ -1,0 +1,47 @@
+/* static/css/sinistros.css */
+
+/* Adicionamos uma margem na base do cabeçalho da página */
+.cabecalho-pagina {
+    margin-bottom: 2rem;
+}
+
+/* Estilos de Status para a lista de Sinistros */
+.item-container.status-andamento .item-header {
+    background-color: #f8d7da; /* Fundo vermelho claro */
+    border-left: 5px solid #dc3545; /* Borda vermelha */
+}
+.item-container.status-andamento .item-header .info-resumida,
+.item-container.status-andamento .item-header .info-resumida strong {
+    color: #721c24; /* Texto vermelho escuro */
+}
+
+.item-container.status-finalizado .item-header {
+    background-color: #d1e7dd; /* Fundo verde claro */
+    border-left: 5px solid #28a745; /* Borda verde */
+}
+.item-container.status-finalizado .item-header .info-resumida,
+.item-container.status-finalizado .item-header .info-resumida strong {
+    color: #0f5132; /* Texto verde escuro */
+}
+
+/* Estilos para as tags de status dentro dos detalhes expandidos */
+.status-tag {
+    padding: 4px 10px;
+    border-radius: 12px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.85em;
+    text-transform: uppercase;
+}
+.status-tag.status-andamento { background-color: #dc3545; } /* Vermelho */
+.status-tag.status-finalizado { background-color: #28a745; } /* Verde */
+
+/* Estilo para a caixa de detalhes formatados */
+.detalhes-formatados {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 1rem 1.5rem;
+    border-radius: 5px;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}

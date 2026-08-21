@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Editar Evento - Intalog{% endblock %}
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card" style="max-width: 800px; margin: 2rem auto;">
+        <h2>Editar Evento: {{ evento.titulo }}</h2>
+        <form method="post" style="margin-top: 2rem;">
+            {% csrf_token %} {{ form.media }} {{ form.as_p }}
+            <div style="text-align: right; margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                <a href="{% url 'APP:calendario_eventos' %}" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn-principal">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

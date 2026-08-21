@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Editar Sinistro - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card" style="max-width: 800px; margin: 2rem auto;">
+        <h2>Editar Registro de Sinistro</h2>
+
+        <p style="font-style: italic; color: #6c757d; margin-top: -1rem;">
+            Apenas o Status e os Detalhes do sinistro podem ser alterados. Para modificar outros campos, utilize o painel de Configurações.
+        </p>
+
+        <form method="post" style="margin-top: 2rem;">
+            {% csrf_token %}
+            {{ form.media }}
+            {{ form.as_p }}
+            <div style="text-align: right; margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                <a href="{% url 'APP:gestao_sinistros' %}" class="btn-cancelar">Cancelar</a>
+                <button type="submit" class="btn-visualizar">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

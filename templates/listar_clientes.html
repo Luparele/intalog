@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-
-{% block title %}Consulta de PGR's - Intalog{% endblock %}
+{% load app_filters %} {% block title %}Consulta de PGR's - Intalog{% endblock %}
 
 {% block styles %}
     <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
@@ -11,7 +10,12 @@
     {% include 'partials/_alerta_lgpd.html' %}
 
     <div class="consulta-card">
-        <h2>Consulta de PGR's</h2>
+        <div class="cabecalho-pagina">
+            <h2>Consulta de PGR's</h2>
+            {% if perms.APP.can_add_pgr %}
+                <a href="{% url 'APP:cadastrar_cliente' %}" class="btn-principal">+ Adicionar PGR</a>
+            {% endif %}
+        </div>
 
         <form method="get" class="form-busca">
             <input type="text" name="q" placeholder="Digite o nome do cliente..." value="{{ query|default:'' }}">
@@ -20,7 +24,7 @@
 
         <div class="lista-itens">
             {% for cliente in clientes %}
-                <div class="item-container">
+                <div class="item-container {{ cliente.status_vencimento }}">
                     <div class="item-header">
                         <span class="info-resumida">
                             <strong>Cliente:</strong> {{ cliente.cliente|default:"Sem nome" }} - <strong>GC:</strong> {{ cliente.gerente_conta|default:"N/A" }}
@@ -57,7 +61,7 @@
                                     <div class="regra-item">
                                         <h5>Regra #{{ forloop.counter }}</h5>
                                         <div class="detalhes-grid">
-                                            <p><strong>Faixa de Valor:</strong> R$ {{ regra.valor_min }} a R$ {{ regra.valor_max }}</p>
+                                            <p><strong>Faixa de Valor:</strong> R$ {{ regra.valor_min|br_currency }} a R$ {{ regra.valor_max|br_currency }}</p>
                                             <p><strong>Contrato:</strong> 
                                                 {% if regra.contrato_frota %}Frota {% endif %}
                                                 {% if regra.contrato_agregado %}Agregado {% endif %}
@@ -76,12 +80,12 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        {% if user.is_superuser %}
-                            <div class="botoes-acao">
-                                <a href="{% url 'APP:editar_cliente' pk=cliente.pk %}" class="btn-editar">Editar Cadastro</a>
-                                <a href="{% url 'APP:excluir_cliente' pk=cliente.pk %}" class="btn-excluir">Excluir Cadastro</a>
-                            </div>
-                        {% endif %}
+                        
+                        <div class="botoes-acao">
+                            {% if perms.APP.can_change_pgr %}<a href="{% url 'APP:editar_cliente' pk=cliente.pk %}" class="btn-editar">Editar Cadastro</a>{% endif %}
+                            {% if perms.APP.can_delete_pgr %}<a href="{% url 'APP:excluir_cliente' pk=cliente.pk %}" class="btn-excluir">Excluir Cadastro</a>{% endif %}
+                        </div>
+                        
                     </div>
                 </div>
             {% empty %}

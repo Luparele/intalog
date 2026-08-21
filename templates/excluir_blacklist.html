@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Excluir Motorista - Black-List{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cadastro_funcionario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-card" style="max-width: 600px; margin: 40px auto; text-align: center;">
+    <h2>Confirmar Exclusão</h2>
+    
+    <p style="margin: 20px 0; font-size: 1.1rem;">
+        Tem certeza que deseja remover <strong>{{ registro.nome_completo }}</strong> da Black-List?
+    </p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions" style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+            <button type="submit" class="btn-principal" style="background-color: #dc3545; border-color: #dc3545; width: auto; margin-top: 0;">Sim, Excluir</button>
+            <a href="{% url 'APP:blacklist' %}" class="btn-secondary" style="display: flex; align-items: center; justify-content: center; width: auto; margin-top: 0;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

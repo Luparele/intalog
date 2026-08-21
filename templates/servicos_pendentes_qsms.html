@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Serviços Pendentes - QSMS{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static 'css/servicos_pendentes.css' %}">{% endblock %}
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Serviços Pendentes - QSMS</h2>
+            {% if perms.APP.can_add_servico_pendente_qsms %}<button id="abrir-modal-criacao-qsms" class="btn-principal">+ Adicionar Nova Tarefa</button>{% endif %}
+        </div>
+        <div id="kanban-board-qsms" class="kanban-board">
+            <div class="kanban-column">
+                <h3 class="kanban-column-title">Tarefas Pendentes</h3>
+                <div class="kanban-cards coluna-pendente">
+                    {% for tarefa in tarefas_pendentes %}
+                        <div class="kanban-card" data-task-id="{{ tarefa.pk }}">
+                            <strong>{{ tarefa.titulo }}</strong>
+                            <strong>Descrição:</strong>
+                            {{ tarefa.descricao }}<br>
+                            <small>Criado por: {{ tarefa.criado_por.username }} em {{ tarefa.data_criacao|date:"d/m/Y" }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3 class="kanban-column-title">Tratativa Iniciada</h3>
+                <div class="kanban-cards coluna-iniciada">
+                    {% for tarefa in tarefas_iniciadas %}
+                         <div class="kanban-card" data-task-id="{{ tarefa.pk }}">
+                            <strong>{{ tarefa.titulo }}</strong>
+                            <strong>Descrição:</strong>
+                            {{ tarefa.descricao }}<br>
+                            <small>Iniciado por: {{ tarefa.iniciado_por.username }} em {{ tarefa.data_inicio_tratativa|date:"d/m/Y" }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3 class="kanban-column-title">Tarefa Finalizada</h3>
+                <div class="kanban-cards coluna-finalizada" id="finalizadas-list-qsms">
+                    {% include 'partials/_kanban_card_qsms.html' %}
+                </div>
+                {% if tarefas_finalizadas.has_next %}
+                    <button id="load-more-btn-qsms" class="btn-principal" style="width:100%; margin-top:1rem;">Carregar Mais</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if perms.APP.can_add_servico_pendente_qsms %}
+<div id="modal-criacao-qsms" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header"><h3>Adicionar Nova Tarefa de QSMS</h3><span class="close-modal">&times;</span></div>
+        <form method="post" action="{% url 'APP:servicos_pendentes_qsms' %}">
+            {% csrf_token %}
+            <div class="modal-body">{{ form_criacao.as_p }}</div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" class="btn-principal">Salvar Tarefa</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<div id="modal-visualizacao-qsms" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            {# Adicionado ID para o Título #}
+            <h3 class="modal-title" id="modal-titulo-tarefa-qsms">Título da Tarefa</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p><strong>Descrição:</strong></p>
+            
+            {# --- ALTERAÇÃO AQUI --- #}
+            {# ID específico para o JavaScript do QSMS preencher #}
+            <p id="modal-descricao-conteudo-qsms" style="white-space: pre-wrap; color: #333;"></p>
+            
+            <h4>Histórico da Tarefa</h4>
+            <div class="modal-body-history">
+                {# JS preenche o histórico aqui #}
+            </div>
+            <hr>
+            
+            {# Os painéis de ação continuam iguais #}
+            <div id="action-panel-pendente-qsms" class="action-panel" style="display: none;">
+                {% if perms.APP.can_start_servico_pendente_qsms %}
+                <button id="btn-iniciar-tratativa-qsms" class="btn-principal">Iniciar Tratativa</button>
+                {% endif %}
+            </div>
+            <div id="action-panel-iniciado-qsms" class="action-panel" style="display: none;">
+                <label for="form_acao_tomada_qsms">Ação a ser Tomada:</label>
+                <textarea id="form_acao_tomada_qsms" name="acao" rows="4" style="width: 100%; margin-top: 0.5rem;"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary close-modal-btn">Fechar</button>
+            <div id="action-panel-iniciado-footer-qsms" class="action-panel" style="display: none; gap: 1rem;">
+                {% if perms.APP.can_update_action_servico_pendente_qsms %}
+                    <button id="btn-gravar-acao-qsms" class="btn-principal">Gravar Ação</button>
+                {% endif %}
+                {% if perms.APP.can_finalize_servico_pendente_qsms %}
+                    <button id="btn-finalizar-qsms" class="btn-editar">Finalizar Tarefa</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}<script src="{% static 'js/servicos_pendentes_qsms.js' %}"></script>{% endblock %}

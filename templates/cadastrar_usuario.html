@@ -43,7 +43,7 @@
 
                 <div class="form-field full-width">
                     <div class="password-strength-meter">
-                        <div class="strength-bar"><div id="strength-bar-fill"></div></div>
+                        <div class="strength-bar"><div class="strength-bar-fill" id="strength-bar-fill"></div></div>
                         <ul class="password-requirements">
                             <li id="req-length">Pelo menos 8 caracteres</li>
                             <li id="req-lowercase">Uma letra minúscula</li>
@@ -60,6 +60,15 @@
                     <div class="form-errors">{{ form.password2.errors }}</div>
                 </div>
             </div>
+
+            <fieldset style="margin-top: 2rem;">
+                <legend>{{ form.groups.label }}</legend>
+                <div style="padding: 1rem;">
+                    <p class="form-text">{{ form.groups.help_text }}</p>
+                    {{ form.groups }}
+                    <div class="form-errors">{{ form.groups.errors }}</div>
+                </div>
+            </fieldset>
 
             <button type="submit" class="btn-principal">Criar Usuário</button>
         </form>

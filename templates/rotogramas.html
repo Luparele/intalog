@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Rotogramas - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/rotogramas.css' %}">
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Gestão de Rotogramas</h2>
+            
+            {% if perms.APP.can_add_rotograma %}
+            <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Rotograma</button>
+            {% endif %}
+        </div>
+        
+        <div class="lista-itens">
+            {% for item in rotogramas %}
+                <div class="item-container">
+                    <div class="item-header">
+                        <span class="info-resumida">
+                            <strong>Nome:</strong> {{ item.nome }}
+                        </span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <h4>Detalhes do Rotograma</h4>
+                        <div class="detalhes-verticais">
+                            <p><strong>Nome:</strong> {{ item.nome }}</p>
+                            <p><strong>Origem:</strong> {{ item.origem }}</p>
+                            <p><strong>Destino:</strong> {{ item.destino }}</p>
+                            {% if item.arquivo_pdf %}
+                                <p><strong>Anexo:</strong> 
+                                    <a href="{{ item.arquivo_pdf.url }}" class="btn-anexo" target="_blank">
+                                        <i class="fas fa-file-pdf"></i> Visualizar PDF
+                                    </a>
+                                </p>
+                            {% endif %}
+                        </div>
+                        
+                        {% if perms.APP.can_add_rotograma %}
+                        <div class="botoes-acao">
+                            <a href="{% url 'APP:editar_rotograma' pk=item.pk %}" class="btn-editar">Editar</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum rotograma cadastrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% if perms.APP.can_add_rotograma %}
+<div id="modal-rotograma" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Adicionar Novo Rotograma</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-body">
+                {{ form.as_p }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" class="btn-principal">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/rotogramas.js' %}"></script>
+{% endblock %}

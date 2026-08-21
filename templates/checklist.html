@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Checklist de Veículos - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/checklist.css' %}">
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+{% endblock %}
+    
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Checklist de Veículos</h2>
+            <div class="botoes-grupo">
+                {% if perms.APP.can_add_checklist_veiculo %}<button id="abrir-modal-veiculo" class="btn-principal">+ Adicionar Veículo</button>{% endif %}
+                {% if perms.APP.can_add_checklist_gr %}<button id="abrir-modal-gr" class="btn-principal">+ Adicionar GR</button>{% endif %}
+                {% if perms.APP.can_add_checklist %}<button id="abrir-modal-checklist" class="btn-principal">+ Adicionar Checklist</button>{% endif %}
+            </div>
+        </div>
+
+        <form method="get" class="form-busca" style="margin-bottom: 20px;">
+            <input type="text" name="q" placeholder="Digite a placa para buscar..." value="{{ query|default:'' }}">
+            <button type="submit">Localizar</button>
+            {% if query %}
+                <a href="{% url 'APP:pagina_checklist' %}" style="margin-left: 10px; color: #dc3545; text-decoration: none; font-size: 0.9rem;">Limpar Busca</a>
+            {% endif %}
+        </form>
+        
+        <h3 class="checklist-titulo">Checklists de Cavalos Mecânicos</h3>
+        <div class="tabela-container">
+            <table class="tabela-checklist">
+                <thead>
+                    <tr>
+                        <th>Veículo</th>
+                        {% for gr in grs_header %}
+                            <th title="Validade de {{ gr.validade_checklist }} dias">{{ gr.nome }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for linha in tabela_cavalos_data %}
+                    <tr data-veiculo-id="{{ linha.veiculo.id }}">
+                        <td title="{{ linha.veiculo.get_categoria_display }} / {{ linha.veiculo.get_tipo_display }}">{{ linha.veiculo.placa }}</td>
+                        {% for celula in linha.checklists_gr %}
+                            <td class="status-{{ celula.status_cor }} {% if perms.APP.can_add_checklist %}checklist-cell{% endif %}" 
+                                data-gr-id="{{ celula.gr_id }}"
+                                title="Placa: {{ linha.veiculo.placa }}&#10;GR: {{ celula.gr_nome }}{% if celula.aprovado and celula.data_aprovacao_str %}&#10;Checklist realizado dia: {{ celula.data_aprovacao_str }}{% elif celula.aprovado is False %}&#10;Motivo da reprovação: {{ celula.motivo_reprovacao|default:'Não informado.' }}{% endif %}&#10;Última atualização por: {{ celula.atualizado_por_nome|default:'N/A' }}">
+                                
+                                {% if celula.dias_restantes == "Reprovado" or celula.dias_restantes == "Inexistente" or celula.dias_restantes == "Inválido" %}
+                                    {{ celula.dias_restantes }}
+                                {% elif celula.dias_restantes < 0 %}
+                                    Vencido
+                                {% else %}
+                                    {{ celula.dias_restantes }} dias
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="{{ grs_header|length|add:1 }}" class="sem-resultados">Nenhum veículo encontrado.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="checklist-titulo">Checklists de Carretas</h3>
+        <div class="tabela-container">
+            <table class="tabela-checklist">
+                <thead>
+                    <tr>
+                        <th>Veículo</th>
+                        {% for gr in grs_header %}
+                            <th title="Validade de {{ gr.validade_checklist }} dias">{{ gr.nome }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for linha in tabela_carretas_data %}
+                    <tr data-veiculo-id="{{ linha.veiculo.id }}">
+                        <td title="{{ linha.veiculo.get_categoria_display }} / {{ linha.veiculo.get_tipo_display }}">{{ linha.veiculo.placa }}</td>
+                        {% for celula in linha.checklists_gr %}
+                            <td class="status-{{ celula.status_cor }} {% if perms.APP.can_add_checklist %}checklist-cell{% endif %}" 
+                                data-gr-id="{{ celula.gr_id }}"
+                                title="Placa: {{ linha.veiculo.placa }}&#10;GR: {{ celula.gr_nome }}{% if celula.aprovado and celula.data_aprovacao_str %}&#10;Checklist realizado dia: {{ celula.data_aprovacao_str }}{% elif celula.aprovado is False %}&#10;Motivo da reprovação: {{ celula.motivo_reprovacao|default:'Não informado.' }}{% endif %}&#10;Última atualização por: {{ celula.atualizado_por_nome|default:'N/A' }}">
+                                
+                                {% if celula.dias_restantes == "Reprovado" or celula.dias_restantes == "Inexistente" or celula.dias_restantes == "Inválido" %}
+                                    {{ celula.dias_restantes }}
+                                {% elif celula.dias_restantes < 0 %}
+                                    Vencido
+                                {% else %}
+                                    {{ celula.dias_restantes }} dias
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="{{ grs_header|length|add:1 }}" class="sem-resultados">Nenhum veículo encontrado.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% if perms.APP.can_add_checklist_veiculo %}
+<div id="modal-veiculo" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header"><h3>Adicionar Veículo</h3><span class="close-modal">&times;</span></div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">{{ veiculo_form.as_p }}</div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" name="submit_veiculo" class="btn-principal">Salvar Veículo</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+{% if perms.APP.can_add_checklist_gr %}
+<div id="modal-gr" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header"><h3>Adicionar Gerenciadora de Risco (GR)</h3><span class="close-modal">&times;</span></div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">{{ gr_form.as_p }}</div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" name="submit_gr" class="btn-principal">Salvar GR</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+{% if perms.APP.can_add_checklist %}
+<div id="modal-checklist" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header"><h3>Adicionar/Editar Checklist</h3><span class="close-modal">&times;</span></div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+                <p>{{ checklist_form.veiculo.label_tag }}{{ checklist_form.veiculo }}</p>
+                <p>{{ checklist_form.gr.label_tag }}{{ checklist_form.gr }}</p>
+                <p>{{ checklist_form.aprovado.label_tag }} {{ checklist_form.aprovado }}</p>
+                
+                <div id="campos-data-aprovado" style="display: none; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee;">
+                    <div>{{ checklist_form.data_aprovacao.label_tag }}{{ checklist_form.data_aprovacao }}</div>
+                    <p style="text-align: center; margin: 0.5rem 0; font-style: italic; color: #6c757d;">- ou -</p>
+                    <div>{{ checklist_form.data_validade_manual.label_tag }}{{ checklist_form.data_validade_manual }}</div>
+                </div>
+
+                <div id="campo-reprovado" style="display: none; margin-top: 1rem;">
+                    <p>{{ checklist_form.motivo_reprovacao.label_tag }}{{ checklist_form.motivo_reprovacao }}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" name="submit_checklist" class="btn-principal">Salvar Checklist</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/checklist.js' %}"></script>
+{% endblock %}

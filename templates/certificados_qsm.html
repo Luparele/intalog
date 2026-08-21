@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Gestão de Certificados - QSMS{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gestao_seguros.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Gestão de Certificados</h2>
+            {% if perms.APP.can_add_certificado %}
+            <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Certificado</button>
+            {% endif %}
+        </div>
+        
+        <div class="lista-itens">
+            {% for cert in certificados %}
+                <div class="item-container {{ cert.status_vencimento }}">
+                    <div class="item-header">
+                        <span class="info-resumida">
+                            <strong>Certificado:</strong> {{ cert.nome_certificado }} - <strong>Validade:</strong> 
+                            {% if cert.status_vencimento == 'vencido' %}
+                                VENCIDO
+                            {% else %}
+                                {{ cert.data_validade|date:"d/m/Y" }}
+                            {% endif %}
+                        </span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <div class="detalhes-grid">
+                            <p><strong>Órgão Competente:</strong> {{ cert.orgao_competente }}</p>
+                            <p><strong>Validade:</strong> {{ cert.data_validade|date:"d/m/Y" }}</p>
+                            {% if cert.link_orgao %}
+                            <p><strong>Link:</strong> <a href="{{ cert.link_orgao }}" target="_blank" rel="noopener noreferrer">{{ cert.link_orgao }}</a></p>
+                            {% endif %}
+                        </div>
+                        <hr>
+                        <h4>Descrição:</h4>
+                        <div class="detalhes-formatados">
+                            {{ cert.descricao|safe }}
+                        </div>
+
+                        {% if cert.anexo %}
+                            <div class="anexos-container" style="margin-top: 1rem;">
+                                <strong>Anexo:</strong>
+                                <a href="{{ cert.anexo.url }}" target="_blank" class="btn-anexo">
+                                    <i class="fas fa-file-pdf"></i> Visualizar Anexo
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        <div class="botoes-acao">
+                            {% if perms.APP.can_change_certificado %}
+                                <a href="{% url 'APP:editar_certificado' pk=cert.pk %}" class="btn-editar">Editar</a>
+                            {% endif %}
+                            <button class="btn-ocultar-detalhes btn-secondary">Ocultar</button>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum certificado cadastrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if perms.APP.can_add_certificado %}
+    <div id="modal-certificado" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Cadastrar Novo Certificado</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-body">
+                    {{ form.media }}
+                    {{ form.as_p }}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                    <button type="submit" class="btn-principal">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/certificados_qsm.js' %}"></script>
+{% endblock %}

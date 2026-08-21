@@ -4,6 +4,9 @@
 
 {% block styles %}
     <link rel="stylesheet" href="{% static 'css/averbacoes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gestao_seguros.css' %}">
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
 {% endblock %}
     
 {% block content %}
@@ -11,7 +14,8 @@
     <div class="content-card">
         <div class="cabecalho-pagina">
             <h2>Gestão de Averbações</h2>
-            {% if user.is_superuser %}
+            
+            {% if perms.APP.can_add_ddr %}
             <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Averbação</button>
             {% endif %}
         </div>
@@ -69,6 +73,7 @@
     </div>
 </div>
 
+{% if perms.APP.can_add_ddr %}
 <div id="modal-averbacao" class="modal-overlay">
     <div class="modal-content">
         <div class="modal-header">
@@ -87,6 +92,7 @@
         </form>
     </div>
 </div>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}

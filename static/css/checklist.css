@@ -1,0 +1,66 @@
+.cabecalho-pagina {
+    align-items: center;
+    border-bottom: 2px solid var(--laranja-intalog);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+}
+.botoes-grupo {
+    display: flex;
+    gap: 1rem;
+}
+
+.tabela-container {
+    overflow-x: auto;
+}
+.tabela-checklist {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+}
+.tabela-checklist th, .tabela-checklist td {
+    width: 1%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+.tabela-checklist thead th {
+    background-color: var(--azul-royal);
+    color: var(--branco);
+    white-space: nowrap;
+}
+.tabela-checklist tbody td:first-child {
+    width: auto;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* Lógica de Cores para Status */
+.status-verde { background-color: #d1e7dd; color: #0f5132; }
+.status-amarelo { background-color: #fff3cd; color: #856404; }
+.status-vermelho { background-color: #f8d7da; color: #721c24; }
+.status-cinza { background-color: #f8f9fa; color: #6c757d; }
+
+.sem-resultados { font-style: italic; color: #777; }
+
+/* Adiciona borda azul à linha em hover, mantendo o background original */
+.tabela-checklist tbody tr.linha-hover td {
+border-bottom: 3px solid var(--azul-royal) !important;
+border-top: 3px solid var(--azul-royal) !important;
+}
+
+.tabela-checklist tbody tr.linha-hover td:first-child {
+border-left: 3px solid var(--azul-royal) !important;
+}
+
+.tabela-checklist tbody tr.linha-hover td:last-child {
+border-right: 3px solid var(--azul-royal) !important;
+}
+
+.checklist-titulo {
+    margin-top: 2.5rem;
+    color: var(--azul-royal);
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #ddd;
+}

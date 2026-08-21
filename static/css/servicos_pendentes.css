@@ -1,0 +1,44 @@
+/* Arquivo: static/css/servicos_pendentes.css */
+
+.kanban-board { display: flex; gap: 1rem; overflow-x: auto; }
+.kanban-column { flex: 1; min-width: 300px; background-color: #f0f2f5; border-radius: 8px; padding: 1rem; }
+.kanban-column-title { margin-top: 0; padding-bottom: 0.5rem; border-bottom: 2px solid #ddd; }
+.kanban-cards { min-height: 200px; display: flex; flex-direction: column; gap: 1rem; }
+.kanban-card { background-color: white; padding: 1rem; border-radius: 6px; box-shadow: var(--sombra); cursor: pointer; transition: transform 0.2s; }
+.kanban-card:hover { transform: translateY(-3px); }
+.kanban-card strong { display: block; margin-bottom: 0.5rem; }
+.kanban-card small { color: #6c757d; }
+.modal-body-history p { margin: 0.5rem 0; padding-left: 10px; border-left: 2px solid #eee; }
+
+/* ALTERAÇÃO: Trocamos # por . para usar classes em vez de IDs */
+.coluna-pendente .kanban-card {
+    background-color: #f8d7da; /* Vermelho claro */
+    border-left: 5px solid #dc3545; /* Borda vermelha escura */
+}
+
+.coluna-iniciada .kanban-card {
+    background-color: #fff3cd; /* Amarelo claro */
+    border-left: 5px solid #ffc107; /* Borda amarela escura */
+}
+
+.coluna-finalizada .kanban-card {
+    background-color: #d1e7dd; /* Verde claro */
+    border-left: 5px solid #28a745; /* Borda verde escura */
+}
+
+/* Regras para garantir o estilo dos botões nos modais */
+[id$="-footer"] .btn-principal {
+    background-color: var(--laranja-intalog);
+    color: var(--branco);
+}
+[id$="-footer"] .btn-principal:hover {
+    background-color: #e65c00;
+}
+
+[id$="-footer"] .btn-editar {
+    background-color: var(--azul-royal);
+    color: var(--branco);
+}
+[id$="-footer"] .btn-editar:hover {
+    background-color: #0041a3;
+}

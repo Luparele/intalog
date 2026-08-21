@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-dzr7gw&s(h0(07@&==^z*+3p4#)^%ms-cun@hydqh6@690a6os'
+SECRET_KEY = 'd(h_6%#u!si&a!=wik*ru@ux6gwftw*(_p2olj)v804w1czlyw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['intalog.pythonanywhere.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'APP',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -121,7 +123,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -138,4 +140,9 @@ LOGIN_REDIRECT_URL = 'APP:dashboard' # Para onde ir após o login
 LOGOUT_REDIRECT_URL = 'APP:login' # Para onde ir após o logout
 
 # Configura o backend de e-mail para exibir os e-mails no console
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com' # Exemplo para Gmail
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'eduardo.intalog@gmail.com' # Coloque seu e-mail aqui
+EMAIL_HOST_PASSWORD = 'Nip02229501' # Coloque sua senha de app aqui

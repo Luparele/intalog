@@ -1,4 +1,4 @@
-/* D:\Python\Intalog\static\css\listar_clientes.css */
+/* static/css/listar_clientes.css */
 
 .consulta-card {
     background-color: var(--branco);
@@ -9,9 +9,20 @@
 
 .consulta-card h2 {
     color: var(--azul-royal);
-    border-bottom: 2px solid var(--laranja-intalog);
     padding-bottom: 10px;
     margin-top: 0;
+}
+
+.cabecalho-pagina {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--laranja-intalog);
+}
+
+.cabecalho-pagina a.btn-principal {
+    text-decoration: none;
 }
 
 .form-busca {
@@ -45,6 +56,17 @@
 .item-header .info-resumida {
     flex-grow: 1;
     font-size: 1.1rem;
+}
+
+.btn-principal {
+    background-color: var(--laranja-intalog);
+    color: var(--branco);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
 }
 
 .btn-visualizar {
@@ -83,12 +105,9 @@
     gap: 1rem;
 }
 
-/* === MUDANÇA IMPORTANTE ABAIXO === */
 .detalhes-grid p {
     margin: 0;
     padding: 0.5rem;
-    /* REMOVEMOS a cor de fundo daqui para que o fundo do card apareça */
-    /* background-color: #f7f7f7; */
     border-radius: 4px;
 }
 .detalhes-grid p strong {
@@ -99,8 +118,6 @@
     grid-column: 1 / -1;
 }
 
-/* === SEÇÃO CORRIGIDA PARA AS REGRAS DE EMBARQUE === */
-
 .regra-item {
     border: 1px solid #e0e0e0;
     border-left: 4px solid var(--laranja-intalog);
@@ -110,12 +127,11 @@
     grid-column: 1 / -1;
 }
 
-/* Regra final para alternar as cores dos CARDS */
 .regras-container .regra-item:nth-child(even) {
-    background-color: #fde3ca; /* Cinza bem claro para itens pares */
+    background-color: #f8f9fa;
 }
 .regras-container .regra-item:nth-child(odd) {
-    background-color: rgb(192, 214, 236); /* Branco para itens ímpares */
+    background-color: var(--branco);
 }
 
 .regra-item h5 {
@@ -123,14 +139,63 @@
     color: var(--cinza-escuro);
 }
 
-/* === FIM DA SEÇÃO CORRIGIDA === */
-
-.botoes-acao { margin-top: 1.5rem; border-top: 1px solid #eee; padding-top: 1.5rem; display: flex; gap: 1rem; }
-.btn-editar, .btn-excluir, .btn-cancelar { display: inline-block; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; text-align: center; transition: background-color 0.2s; }
+.botoes-acao {
+    margin-top: 1.5rem;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+.btn-editar, .btn-excluir, .btn-cancelar {
+    display: inline-block;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s;
+}
 .btn-editar { background-color: var(--azul-royal); }
 .btn-editar:hover { background-color: #0041a3; }
 .btn-excluir { background-color: #dc3545; }
 .btn-excluir:hover { background-color: #c82333; }
 .btn-cancelar { background-color: #6c757d; }
 .btn-cancelar:hover { background-color: #5a6268; }
+
 .sem-resultados { text-align: center; padding: 2rem; color: #777; }
+
+/* --- ESTILOS DE ALERTA DE VENCIMENTO DE PGR --- */
+
+.item-container.ok .item-header {
+    background-color: #d1e7dd;
+    border-left: 5px solid #28a745;
+}
+.item-container.ok .info-resumida strong {
+    color: #0f5132;
+}
+
+.item-container.proximo .item-header {
+    background-color: #fff3cd;
+    border-left: 5px solid #ffc107;
+}
+.item-container.proximo .info-resumida strong {
+    color: #856404;
+}
+
+.item-container.urgente .item-header {
+    background-color: #f8d7da;
+    border-left: 5px solid #dc3545;
+}
+.item-container.urgente .info-resumida strong {
+    color: #721c24;
+}
+
+.item-container.vencido .item-header {
+    background-color: #e2e3e5;
+    border-left: 5px solid #6c757d;
+    opacity: 0.8;
+}
+.item-container.vencido .info-resumida {
+    font-weight: bold;
+}

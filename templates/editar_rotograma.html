@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Editar Rotograma - Intalog{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="content-card" style="max-width: 800px; margin: auto;">
+        <h2>Editar Rotograma</h2>
+        <form method="post" enctype="multipart/form-data" style="margin-top: 2rem;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="text-align: right; margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: flex-end;">
+                <a href="{% url 'APP:gestao_rotogramas' %}" class="btn-secondary">Cancelar</a>
+                <button type="submit" class="btn-principal">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

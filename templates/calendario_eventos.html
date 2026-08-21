@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Calendário de Eventos - QSMS{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sinistros.css' %}">
+    <style>
+        .calendarios-container { display: flex; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap; }
+        .calendario { flex: 1; min-width: 300px; background-color: white; padding: 1rem; border-radius: 8px; box-shadow: var(--sombra); }
+        .fc .fc-toolbar-title { font-size: 1.2em; } .fc .fc-daygrid-day-number { text-decoration: none; }
+    </style>
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina" style="border-bottom: none;">
+            <h2>Calendário de Eventos - QSMS</h2>
+            {% if perms.APP.can_add_evento %}
+            <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Evento</button>
+            {% endif %}
+        </div>
+        <div class="calendarios-container">
+            <div id="calendario-atual" class="calendario"></div>
+            <div id="calendario-seguinte" class="calendario"></div>
+        </div>
+        <div class="lista-itens">
+            {% for evento in eventos %}
+                <div class="item-container {% if evento.concluido %}status-finalizado{% else %}status-andamento{% endif %}">
+                    <div class="item-header">
+                        <span class="info-resumida"><strong>Evento:</strong> {{ evento.titulo }} - <strong>Data:</strong> {{ evento.data_evento|date:"d/m/Y" }} às {{ evento.hora_evento|time:"H:i" }}</span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <p><strong>Status:</strong> <span class="status-tag {% if evento.concluido %}status-finalizado{% else %}status-andamento{% endif %}">{% if evento.concluido %}Concluído{% else %}Pendente{% endif %}</span></p>
+                        <hr><h4>Descrição:</h4><div class="detalhes-formatados">{{ evento.descricao|safe }}</div>
+                        <div class="botoes-acao">
+                            {% if perms.APP.can_change_evento %}<a href="{% url 'APP:editar_evento' pk=evento.pk %}" class="btn-editar">Editar Registro</a>{% endif %}
+                            <button class="btn-ocultar-detalhes btn-secondary">Ocultar</button>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum evento agendado.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% if perms.APP.can_add_evento %}
+<div id="modal-evento" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header"><h3>Adicionar Novo Evento</h3><span class="close-modal">&times;</span></div>
+        <form method="post">{% csrf_token %}<div class="modal-body">{{ form.media }}{{ form.as_p }}</div>
+            <div class="modal-footer"><button type="button" class="btn-secondary close-modal-btn">Cancelar</button><button type="submit" class="btn-principal">Salvar</button></div>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/calendario_eventos.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core/locales/pt-br.global.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarElAtual = document.getElementById('calendario-atual');
+        var calendarAtual = new FullCalendar.Calendar(calendarElAtual, {
+            initialView: 'dayGridMonth', locale: 'pt-br', headerToolbar: { left: 'title', center: '', right: '' },
+            events: "{% url 'APP:eventos_json' %}"
+        });
+        calendarAtual.render();
+        var calendarElSeguinte = document.getElementById('calendario-seguinte');
+        var hoje = new Date(); var proximoMes = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 1);
+        var calendarSeguinte = new FullCalendar.Calendar(calendarElSeguinte, {
+            initialView: 'dayGridMonth', locale: 'pt-br', initialDate: proximoMes, headerToolbar: { left: 'title', center: '', right: '' },
+            events: "{% url 'APP:eventos_json' %}"
+        });
+        calendarSeguinte.render();
+    });
+    </script>
+{% endblock %}

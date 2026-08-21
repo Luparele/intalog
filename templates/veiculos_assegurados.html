@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load app_filters %}
+
+{% block title %}Veículos Assegurados{% endblock %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/gestao_seguros.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Veículos Assegurados</h2>
+            {% if perms.APP.can_add_veiculo_assegurado %}<button id="abrir-modal-btn" class="btn-principal">+ Adicionar Veículo</button>{% endif %}
+        </div>
+        <div class="lista-itens">
+            {% for veiculo in veiculos %}
+                <div class="item-container {{ veiculo.status_vencimento }}">
+                    <div class="item-header">
+                        <span class="info-resumida">
+                            <strong>{{ veiculo.placa }}</strong> ({{ veiculo.seguradora }}) -
+                            <strong>Vigência:</strong>
+                            {% if veiculo.status_vencimento == 'vencido' %} VENCIDO
+                            {% else %} {{ veiculo.vigencia|date:"d/m/Y" }}
+                            {% endif %}
+                        </span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <div class="detalhes-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                            <p><strong>PLACA:</strong> {{ veiculo.placa }}</p>
+                            <p><strong>SEGURADORA:</strong> {{ veiculo.seguradora }}</p>
+                            <p><strong>VIGÊNCIA:</strong> {{ veiculo.vigencia|date:"d/m/Y" }}</p>
+                            <p><strong>MARCA:</strong> {{ veiculo.marca }}</p>
+                            <p><strong>MODELO:</strong> {{ veiculo.modelo }}</p>
+                            <p><strong>ANO/MODELO:</strong> {{ veiculo.ano_fabricacao }}/{{ veiculo.ano_modelo }}</p>
+                            <p><strong>COBERTURA:</strong> {{ veiculo.get_cobertura_display }}</p>
+                            <p><strong>FIPE:</strong> {{ veiculo.valor_fipe }}%</p>
+                            <p><strong>FRANQUIA:</strong> R$ {{ veiculo.franquia|br_currency }}</p>
+                            <p><strong>DANOS MATERIAIS:</strong> R$ {{ veiculo.danos_materiais|br_currency }}</p>
+                            <p><strong>DANOS CORPORAIS:</strong> R$ {{ veiculo.danos_corporais|br_currency }}</p>
+                            <p><strong>DANOS MORAIS:</strong> R$ {{ veiculo.danos_morais|br_currency }}</p>
+
+                            <p>
+                                <strong>APP MORTE:</strong> R$ {{ veiculo.app_morte|br_currency }}
+                                <span class="info-tooltip">
+                                    <i class="fas fa-info-circle info-icon"></i>
+                                    <span class="tooltip-text">Garante o pagamento de uma indenização pré-definida na apólice em caso de morte do passageiro.</span>
+                                </span>
+                            </p>
+
+                            <p>
+                                <strong>APP INVALIDEZ:</strong> R$ {{ veiculo.app_invalidez|br_currency }}
+                                <span class="info-tooltip">
+                                    <i class="fas fa-info-circle info-icon"></i>
+                                    <span class="tooltip-text">Garante o pagamento de uma indenização pré-definida na apólice em caso de invalidez permanente do passageiro.</span>
+                                </span>
+                            </p>
+
+                            <p>
+                                <strong>ASSISTÊNCIA 24H:</strong> {{ veiculo.assistencia_24h }}
+                                <span class="info-tooltip">
+                                    <i class="fas fa-info-circle info-icon"></i>
+                                    <span class="tooltip-text">Assistência/Guincho 24h com limite de quilometragem.</span>
+                                </span>
+                            </p>
+
+                            <p><strong>CARRO RESERVA:</strong> {{ veiculo.carro_reserva }}</p>
+                            <p><strong>VIDROS:</strong> {% if veiculo.vidros %}Sim{% else %}Não{% endif %}</p>
+                        </div>
+                        <div class="botoes-acao">
+                            {% if perms.APP.can_change_veiculo_assegurado %}<a href="{% url 'APP:editar_veiculo_assegurado' pk=veiculo.pk %}" class="btn-editar">Editar</a>{% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum veículo assegurado cadastrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% if perms.APP.can_add_veiculo_assegurado %}
+<div id="modal-veiculo" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Adicionar Veículo Assegurado</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+                {{ form.as_p }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" class="btn-principal">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/veiculos_assegurados.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Tratativas GR INTALOG{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/servicos_pendentes.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Tratativas GR INTALOG</h2>
+            {% if perms.APP.can_add_servico_pendente %}
+            <button id="abrir-modal-criacao" class="btn-principal">+ Adicionar Nova Tarefa</button>
+            {% endif %}
+        </div>
+        <div id="kanban-board" class="kanban-board">
+            <div class="kanban-column">
+                <h3 class="kanban-column-title">Tarefas Pendentes</h3>
+                <div class="kanban-cards coluna-pendente">
+                    {% for tarefa in tarefas_pendentes %}
+                    <div class="kanban-card" data-task-id="{{ tarefa.pk }}">
+                        <strong>{{ tarefa.titulo }}</strong>
+                        <strong>Descrição:</strong>
+                        {{ tarefa.descricao|truncatewords_html:10|safe }}<br>
+                        <small>Criado por: {{ tarefa.criado_por.username }} em {{ tarefa.data_criacao|date:"d/m/Y" }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3 class="kanban-column-title">Tratativa Iniciada</h3>
+                <div class="kanban-cards coluna-iniciada">
+                    {% for tarefa in tarefas_iniciadas %}
+                    <div class="kanban-card" data-task-id="{{ tarefa.pk }}">
+                        <strong>{{ tarefa.titulo }}</strong>
+                        <strong>Descrição:</strong>
+                        {{ tarefa.descricao|truncatewords_html:10|safe }}<br>
+                        <small>Iniciado por: {{ tarefa.iniciado_por.username }} em {{ tarefa.data_inicio_tratativa|date:"d/m/Y" }}</small>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="kanban-column">
+                <h3 class="kanban-column-title">Tarefa Finalizada</h3>
+                <div class="kanban-cards coluna-finalizada" id="finalizadas-list-gr">
+                    {% include 'partials/_kanban_card_gr.html' %}
+                </div>
+                {% if tarefas_finalizadas.has_next %}
+                <button id="load-more-btn-gr" class="btn-principal" style="width:100%; margin-top:1rem;">Carregar
+                    Mais</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if perms.APP.can_add_servico_pendente %}
+<div id="modal-criacao" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Adicionar Nova Tarefa</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+                {{ form_criacao.media }}
+                {{ form_criacao.as_p }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" class="btn-principal">Salvar Tarefa</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<div id="modal-visualizacao" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            {# Adicionamos um ID aqui também para o JS preencher o título #}
+            <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                <h3 class="modal-title" id="modal-titulo-tarefa">Título da Tarefa</h3>
+                {% if perms.APP.can_add_servico_pendente %}
+                <button id="btn-editar-servico" class="btn-principal"
+                    style="padding: 5px 10px; font-size: 0.8rem;">Editar</button>
+                {% endif %}
+            </div>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            {# Container de Visualização #}
+            <div id="view-mode-container">
+                <p><strong>Descrição:</strong></p>
+                {# Removemos o {{ tarefa.descricao }} e colocamos um ID para o JS preencher #}
+                <p id="modal-descricao-conteudo" style="white-space: pre-wrap; color: #333;"></p>
+            </div>
+
+            {# Container de Edição (Oculto inicialmente) #}
+            <div id="edit-mode-container" style="display: none;">
+                <label for="edit-titulo">Título:</label>
+                <input type="text" id="edit-titulo" class="form-control" style="width: 100%; margin-bottom: 10px;">
+
+                <label for="edit-descricao">Descrição:</label>
+                <textarea id="edit-descricao" class="form-control" rows="5" style="width: 100%;"></textarea>
+
+                <div style="margin-top: 10px; text-align: right;">
+                    <button id="btn-cancelar-edicao" class="btn-secondary">Cancelar</button>
+                    <button id="btn-salvar-edicao" class="btn-principal">Salvar</button>
+                </div>
+            </div>
+
+            <h4>Histórico da Tarefa</h4>
+            <div class="modal-body-history">
+                {# O JS vai preencher o histórico aqui #}
+            </div>
+            <hr>
+            <div id="action-panel-pendente" class="action-panel" style="display: none;">
+                {% if perms.APP.can_start_servico_pendente %}
+                <button id="btn-iniciar-tratativa" class="btn-principal">Iniciar Tratativa</button>
+                {% endif %}
+            </div>
+            <div id="action-panel-iniciado" class="action-panel" style="display: none;">
+                <label for="form_acao_tomada">Ação a ser Tomada:</label>
+                <textarea id="form_acao_tomada" name="acao" rows="4"
+                    style="width: 100%; margin-top: 0.5rem;"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary close-modal-btn">Fechar</button>
+            <div id="action-panel-iniciado-footer" class="action-panel" style="display: none; gap: 1rem;">
+                {% if perms.APP.can_update_action_servico_pendente %}
+                <button id="btn-gravar-acao" class="btn-principal">Gravar Ação</button>
+                {% endif %}
+                {% if perms.APP.can_finalize_servico_pendente %}
+                <button id="btn-finalizar" class="btn-editar">Finalizar Tarefa</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/servicos_pendentes.js' %}"></script>
+{% endblock %}

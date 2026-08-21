@@ -1,0 +1,8 @@
+{% for tarefa in tarefas_finalizadas %}
+    <div class="kanban-card" data-task-id="{{ tarefa.pk }}">
+        <strong>{{ tarefa.titulo }}</strong>
+        <strong>Descrição:</strong>
+        {{ tarefa.descricao }}<br>
+        <small>Finalizado por: {{ tarefa.finalizado_por.username }} em {{ tarefa.data_finalizacao|date:"d/m/Y" }}</small>
+    </div>
+{% endfor %}

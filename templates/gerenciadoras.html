@@ -13,11 +13,13 @@
     <div class="consulta-card">
         <div class="cabecalho-pagina">
             <h2>Gerenciadoras de Risco</h2>
-            {% if user.is_superuser %}
+            
+            {% if perms.APP.can_add_gr %}
                 <button id="toggle-form-btn" class="btn-principal">+ Adicionar GR</button>
             {% endif %}
         </div>
         
+        {% if perms.APP.can_add_gr %}
         <div id="inline-form-container" class="inline-form-container" style="display: none;">
             <h3>Cadastrar Nova Gerenciadora</h3>
             <form method="post">
@@ -36,6 +38,7 @@
                 </div>
             </form>
         </div>
+        {% endif %}
 
         <div class="lista-itens">
             {% for gr in gerenciadoras %}

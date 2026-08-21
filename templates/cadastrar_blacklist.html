@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ acao }} Motorista - Black-List{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/cadastro_funcionario.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h2>{{ acao }} Motorista na Black-List</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Dados do Motorista</legend>
+            <div class="form-grid">
+                <div class="form-field full-width">{{ form.nome_completo.label_tag }}{{ form.nome_completo }}</div>
+                <div class="form-field">{{ form.cpf.label_tag }}{{ form.cpf }}</div>
+                <div class="form-field full-width">{{ form.motivo_bloqueio.label_tag }}{{ form.motivo_bloqueio }}</div>
+            </div>
+        </fieldset>
+        
+        <div class="form-actions" style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="btn-principal" style="width: auto; margin-top: 0;">Salvar</button>
+            <a href="{% url 'APP:blacklist' %}" class="btn-secondary" style="display: flex; align-items: center; justify-content: center; width: auto; margin-top: 0;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $('.cpf-mask').mask('000.000.000-00', {reverse: true});
+    });
+</script>
+{% endblock %}

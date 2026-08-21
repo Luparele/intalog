@@ -3,9 +3,16 @@
 /* --- SEÇÃO DE ESTATÍSTICAS --- */
 .stats-card-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    /* 1 coluna por padrão (telas pequenas) */
+    grid-template-columns: 1fr;
     gap: 1.5rem;
     margin-bottom: 2.5rem;
+}
+/* Para telas médias (768px) e maiores, muda para 3 colunas */
+@media (min-width: 768px) {
+    .stats-card-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .stat-card-item {
@@ -18,12 +25,10 @@
     text-decoration: none;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-
 .stat-card-item:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0,0,0,0.15);
 }
-
 .stat-card-icon {
     font-size: 1.8rem;
     color: var(--branco);
@@ -36,22 +41,20 @@
     margin-right: 1.5rem;
     flex-shrink: 0;
 }
-
 .stat-card-info {
     display: flex;
     flex-direction: column;
 }
-
 .stat-card-number {
     font-size: 2rem;
     font-weight: bold;
     color: var(--cinza-escuro);
 }
-
 .stat-card-label {
     font-size: 1rem;
     color: #6c757d;
 }
+
 
 /* --- CABEÇALHO --- */
 .dashboard-header {
@@ -64,6 +67,7 @@
 .dashboard-header h2 { margin: 0 0 0.5rem 0; font-size: 2rem; }
 .dashboard-header p { margin: 0; font-size: 1.1rem; opacity: 0.9; }
 
+
 /* --- TÍTULO DAS SEÇÕES --- */
 .section-title {
     font-size: 1.5rem;
@@ -73,6 +77,7 @@
     padding-bottom: 0.5rem;
     border-bottom: 1px solid #ddd;
 }
+
 
 /* --- SEÇÃO DE CARDS INFORMATIVOS E GRÁFICOS --- */
 .dashboard-grid {
@@ -200,18 +205,3 @@
     max-width: 300px;
     margin: auto;
 }
-
-/* Modal de Mensagens */
-.modal-overlay { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
-.modal-content { background-color: #fefefe; border-radius: 8px; width: 90%; max-width: 600px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); animation: animatetop 0.4s; position: relative; }
-.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid #dee2e6; background-color: var(--azul-royal); color: var(--branco); border-radius: 8px 8px 0 0; }
-.modal-header h3 { margin: 0; }
-.close-modal { font-size: 2rem; font-weight: bold; cursor: pointer; transition: color 0.2s; }
-.close-modal:hover { color: #ccc; }
-.modal-body { padding: 1.5rem; }
-.modal-body p { margin-top: 0; line-height: 1.6; font-size: 1.1rem; }
-.modal-body small { color: #777; }
-.modal-footer { padding: 1rem 1.5rem; text-align: right; border-top: 1px solid #dee2e6; background-color: #f9f9f9; border-radius: 0 0 8px 8px; display: flex; gap: 1rem; justify-content: flex-end; }
-.btn-secondary { background: #6c757d; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; }
-.btn-principal { background-color: var(--laranja-intalog); color: var(--branco); border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; text-decoration: none; }
-@keyframes animatetop { from {top: -300px; opacity: 0} to {top: 0; opacity: 1} }

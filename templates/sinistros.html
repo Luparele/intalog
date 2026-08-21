@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Gestão de Sinistros - Intalog{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/listar_clientes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sinistros.css' %}">
+{% endblock %}
+        
+{% block content %}
+<div class="main-content-container">
+    <div class="consulta-card">
+        <div class="cabecalho-pagina">
+            <h2>Gestão de Sinistros</h2>
+            
+            {% if perms.APP.can_add_sinistro %}
+            <button id="abrir-modal-btn" class="btn-visualizar">+ Novo Registro</button>
+            {% endif %}
+        </div>
+        
+        <div class="lista-itens">
+            {% for sinistro in sinistros %}
+                <div class="item-container status-{{ sinistro.status|lower }}">
+                    <div class="item-header">
+                        <span class="info-resumida">
+                            <strong>Veículo:</strong> {{ sinistro.veiculo_assegurado }} - <strong>Data:</strong> {{ sinistro.data_hora_sinistro|date:"d/m/Y H:i" }}
+                        </span>
+                        <button class="btn-visualizar">Visualizar</button>
+                    </div>
+                    <div class="item-detalhes">
+                        <p><strong>Seguradora:</strong> {{ sinistro.seguradora }}</p>
+                        <p><strong>Status:</strong> <span class="status-tag status-{{ sinistro.status|lower }}">{{ sinistro.get_status_display }}</span></p>
+                        <hr>
+                        <h4>Detalhes do Sinistro:</h4>
+                        <div class="detalhes-formatados">
+                            {{ sinistro.detalhes|safe }}
+                        </div>
+                        
+                        <div class="botoes-acao">
+                            {% if perms.APP.can_change_sinistro %}
+                                <a href="{% url 'APP:editar_sinistro' pk=sinistro.pk %}" class="btn-editar">Editar Registro</a>
+                            {% endif %}
+                            <a href="#" class="btn-ocultar-detalhes btn-secondary">Ocultar Detalhes</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="sem-resultados">Nenhum sinistro registrado.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% if perms.APP.can_add_sinistro %}
+<div id="modal-sinistro" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Registrar Novo Sinistro</h3>
+            <span class="close-modal">&times;</span>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-body">
+                {{ form.media }}
+                {{ form.as_p }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary close-modal-btn">Cancelar</button>
+                <button type="submit" class="btn-principal">Salvar</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'js/gestao_sinistros.js' %}"></script>
+{% endblock %}
