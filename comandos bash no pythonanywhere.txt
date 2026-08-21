@@ -1,9 +1,0 @@
-Fazer o backup em (main) do pythonanywhere:
-zip -r backup_intalog_$(date +%Y-%m-%d).zip Intalog .
-
-ativar máquina virtual no Pythonanywhere:
-workon intalog-venv
-
-realizar as migrações:
-python manage.py makemigrations
-python manage.py migrate
