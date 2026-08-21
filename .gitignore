@@ -38,3 +38,11 @@ Thumbs.db
 .idea/
 .vscode/
 *.swp
+
+# Arquivos de controle do usuario
+Arquivos modificados.txt
+Alterações Pretendidas - Projeto Intalog.docx
+comandos bash no pythonanywhere.txt
+pythonanywhere.com dados.txt
+Backups/
+Arquivos de Apoio/
