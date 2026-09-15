@@ -279,5 +279,4 @@ class BlackListForm(forms.ModelForm):
         widgets = {
             'nome_completo': forms.TextInput(attrs={'placeholder': 'Nome Completo'}),
             'cpf': forms.TextInput(attrs={'class': 'cpf-mask', 'placeholder': '000.000.000-00'}),
-            'motivo_bloqueio': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Motivo do bloqueio...'}),
         }

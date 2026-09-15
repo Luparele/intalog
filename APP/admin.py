@@ -4,7 +4,7 @@ from .models import (
     GerenciadoraRisco, Sinistro, Rotograma, ChecklistVeiculo, ChecklistGR, 
     Checklist, TreinamentoQSMS, CertificadoQSMS, EventoQSMS, ContratoDiverso, 
     ServicoPendente, HistoricoAcao, ServicoPendenteQSMS, HistoricoAcaoQSMS,
-    VeiculoAssegurado
+    VeiculoAssegurado, BlackList
 )
 
 # --- Classes de Administração Personalizadas ---
@@ -82,3 +82,6 @@ admin.site.register(HistoricoAcaoQSMS)
 
 # Registro de Veículos Assegurados (Adicionado)
 admin.site.register(VeiculoAssegurado, VeiculoAsseguradoAdmin)
+
+# Registro da BlackList
+admin.site.register(BlackList)

@@ -394,7 +394,7 @@ class VeiculoAssegurado(models.Model):
 class BlackList(models.Model):
     nome_completo = models.CharField("Nome Completo", max_length=150)
     cpf = models.CharField("CPF", max_length=14, unique=True)
-    motivo_bloqueio = models.TextField(verbose_name="Motivo do Bloqueio")
+    motivo_bloqueio = RichTextField(verbose_name="Motivo do Bloqueio")
     data_cadastro = models.DateTimeField(auto_now_add=True, verbose_name="Data de Cadastro")
     data_atualizacao = models.DateTimeField(auto_now=True, verbose_name="Data de Atualização")
 

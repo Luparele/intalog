@@ -11,7 +11,7 @@
     <h2>{{ acao }} Motorista na Black-List</h2>
     
     <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+        {% csrf_token %} {{ form.media }}
         <fieldset>
             <legend>Dados do Motorista</legend>
             <div class="form-grid">
