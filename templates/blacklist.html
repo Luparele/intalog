@@ -35,7 +35,7 @@
                     <div class="item-detalhes">
                         <h4>Detalhes do Bloqueio</h4>
                         <div class="detalhes-verticais">
-                            <p><strong style="width: 140px;">Motivo:</strong> {{ item.motivo_bloqueio }}</p>
+                            <div style="display: flex; gap: 10px;"><strong style="width: 140px; flex-shrink: 0;">Motivo:</strong> <div>{{ item.motivo_bloqueio|safe }}</div></div>
                             <p><strong style="width: 140px;">Cadastrado em:</strong> {{ item.data_cadastro|date:"d/m/Y H:i" }}</p>
                             <p><strong style="width: 140px;">Atualizado em:</strong> {{ item.data_atualizacao|date:"d/m/Y H:i" }}</p>
                         </div>
