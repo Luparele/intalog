@@ -29,7 +29,7 @@
                     {% if perms.APP.can_view_pgr_list %}<li><a href="{% url 'APP:consultar_clientes' %}"><span class="link-text">PGRs & Quadros Sinópticos</span></a></li>{% endif %}
                     {% if perms.APP.can_view_gr_list %}<li><a href="{% url 'APP:gestao_gerenciadoras' %}"><span class="link-text">Gerenciadoras de Risco</span></a></li>{% endif %}
                     {% if perms.APP.can_view_rotogramas_list %}<li><a href="{% url 'APP:gestao_rotogramas' %}"><span class="link-text">Rotogramas</span></a></li>{% endif %}
-                    {% if perms.APP.can_view_checklist_page %}<li><a href="{% url 'APP:pagina_checklist' %}"><span class="link-text">Checklist</span></a></li>{% endif %}
+                    {% if perms.APP.can_view_checklist_page %}<li><a href="{% url 'APP:pagina_checklist' %}"><span class="link-text">Checklist Frota/Agregado</span></a></li>{% endif %}
                     {% if perms.APP.can_view_servicos_pendentes %}<li><a href="{% url 'APP:servicos_pendentes' %}"><span class="link-text">Tratativas GR</span></a></li>{% endif %}
                     {% if perms.APP.can_view_blacklist %}<li><a href="{% url 'APP:blacklist' %}"><span class="link-text">Black-List</span></a></li>{% endif %}
                 </ul>
