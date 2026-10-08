@@ -41,7 +41,14 @@
                 <tbody>
                     {% for linha in tabela_cavalos_data %}
                     <tr data-veiculo-id="{{ linha.veiculo.id }}">
-                        <td title="{{ linha.veiculo.get_categoria_display }} / {{ linha.veiculo.get_tipo_display }}">{{ linha.veiculo.placa }}</td>
+                        <td title="{{ linha.veiculo.get_categoria_display }} / {{ linha.veiculo.get_tipo_display }}">
+                            {{ linha.veiculo.placa }}
+                            {% if perms.APP.can_add_checklist_veiculo %}
+                            <a href="#" onclick="excluirVeiculo({{ linha.veiculo.id }}, '{{ linha.veiculo.placa }}'); return false;" style="color: red; margin-left: 5px; text-decoration: none;" title="Apagar veículo">
+                                <i class="fas fa-trash" style="font-size: 0.8em;"></i>
+                            </a>
+                            {% endif %}
+                        </td>
                         {% for celula in linha.checklists_gr %}
                             <td class="status-{{ celula.status_cor }} {% if perms.APP.can_add_checklist %}checklist-cell{% endif %}" 
                                 data-gr-id="{{ celula.gr_id }}"
@@ -80,7 +87,14 @@
                 <tbody>
                     {% for linha in tabela_carretas_data %}
                     <tr data-veiculo-id="{{ linha.veiculo.id }}">
-                        <td title="{{ linha.veiculo.get_categoria_display }} / {{ linha.veiculo.get_tipo_display }}">{{ linha.veiculo.placa }}</td>
+                        <td title="{{ linha.veiculo.get_categoria_display }} / {{ linha.veiculo.get_tipo_display }}">
+                            {{ linha.veiculo.placa }}
+                            {% if perms.APP.can_add_checklist_veiculo %}
+                            <a href="#" onclick="excluirVeiculo({{ linha.veiculo.id }}, '{{ linha.veiculo.placa }}'); return false;" style="color: red; margin-left: 5px; text-decoration: none;" title="Apagar veículo">
+                                <i class="fas fa-trash" style="font-size: 0.8em;"></i>
+                            </a>
+                            {% endif %}
+                        </td>
                         {% for celula in linha.checklists_gr %}
                             <td class="status-{{ celula.status_cor }} {% if perms.APP.can_add_checklist %}checklist-cell{% endif %}" 
                                 data-gr-id="{{ celula.gr_id }}"
@@ -169,6 +183,20 @@
 </div>
 {% endif %}
 
+{% if perms.APP.can_add_checklist_veiculo %}
+<form id="form-excluir-veiculo" method="post" style="display: none;">
+    {% csrf_token %}
+</form>
+<script>
+function excluirVeiculo(id, placa) {
+    if (confirm('Atenção: Você tem certeza que deseja excluir o veículo placa ' + placa + ' e TODOS os seus checklists associados?\n\nEsta ação não pode ser desfeita.')) {
+        var form = document.getElementById('form-excluir-veiculo');
+        form.action = "{% url 'APP:excluir_veiculo_checklist' 0 %}".replace('0', id);
+        form.submit();
+    }
+}
+</script>
+{% endif %}
 {% endblock %}
 
 {% block scripts %}

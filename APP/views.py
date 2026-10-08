@@ -1123,3 +1123,13 @@ def delete_blacklist(request, pk):
         return redirect('APP:blacklist')
     context = {'registro': registro}
     return render(request, 'excluir_blacklist.html', context)
+@login_required
+@permission_required('APP.can_add_checklist_veiculo', raise_exception=True)
+def excluir_veiculo_checklist(request, pk):
+    veiculo = get_object_or_404(ChecklistVeiculo, pk=pk)
+    if request.method == 'POST':
+        placa = veiculo.placa
+        veiculo.delete()
+        messages.success(request, f'Veículo placa {placa} excluído com sucesso.')
+    return redirect('APP:pagina_checklist')
+

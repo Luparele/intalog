@@ -68,6 +68,8 @@ urlpatterns = [
     path('gerenciamento/black-list/editar/<int:pk>/', views.edit_blacklist, name='edit_blacklist'),
     path('gerenciamento/black-list/excluir/<int:pk>/', views.delete_blacklist, name='delete_blacklist'),
 
+    path('checklist/veiculo/excluir/<int:pk>/', views.excluir_veiculo_checklist, name='excluir_veiculo_checklist'),
+
     # ROTA QUE ESTAVA FALTANDO:
     path('downloads/', views.pagina_downloads, name='pagina_downloads'),
 
