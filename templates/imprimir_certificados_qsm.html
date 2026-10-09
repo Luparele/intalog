@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Certificados QSMS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .top-banner {
+            background-color: #0052cc;
+            text-align: center;
+            padding: 15px 0;
+            border-bottom: 4px solid #ff6600; /* Linha laranja como na página principal */
+            margin-bottom: 20px;
+        }
+        .top-banner img {
+            max-height: 50px;
+        }
+        h1.titulo-pagina {
+            text-align: center;
+            margin: 0 0 20px 0;
+            font-size: 20px;
+            color: #0052cc;
+        }
+        .tabela-container {
+            padding: 0 20px 20px 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 6px 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #0052cc;
+            color: #ffffff;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        @media print {
+            @page {
+                size: landscape;
+                margin: 1cm;
+            }
+            .tabela-container {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body onload="window.print()">
+
+    <div class="top-banner">
+        <img src="{% static 'images/logo.png' %}" alt="Logo">
+    </div>
+
+    <h1 class="titulo-pagina">Lista de Certificados QSMS</h1>
+
+    <div class="tabela-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome do Certificado</th>
+                    <th style="width: 100px;">Validade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cert in certificados %}
+                <tr>
+                    <td>{{ cert.nome_certificado }}</td>
+                    <td>{{ cert.data_validade|date:"d/m/Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2" style="text-align: center;">Nenhum certificado cadastrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

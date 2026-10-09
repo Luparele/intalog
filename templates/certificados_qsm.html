@@ -12,9 +12,12 @@
     <div class="consulta-card">
         <div class="cabecalho-pagina">
             <h2>Gestão de Certificados</h2>
-            {% if perms.APP.can_add_certificado %}
-            <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Certificado</button>
-            {% endif %}
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <a href="{% url 'APP:imprimir_certificados' %}" target="_blank" class="btn-principal" style="background-color: #6c757d; border-color: #6c757d; text-decoration: none;"><i class="fas fa-print"></i> Imprimir / PDF</a>
+                {% if perms.APP.can_add_certificado %}
+                <button id="abrir-modal-btn" class="btn-principal">+ Adicionar Certificado</button>
+                {% endif %}
+            </div>
         </div>
         
         <div class="lista-itens">

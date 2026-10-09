@@ -85,6 +85,7 @@ urlpatterns = [
     path('api/treinamentos/', views.treinamentos_json, name='treinamentos_json'),
     path('treinamentos/editar/<int:pk>/', views.editar_treinamento, name='editar_treinamento'),
     path('certificados-qsm/', views.gestao_certificados, name='gestao_certificados'),
+    path('certificados-qsm/imprimir/', views.imprimir_certificados, name='imprimir_certificados'),
     path('certificados-qsm/editar/<int:pk>/', views.editar_certificado, name='editar_certificado'),
     path('calendario-eventos/', views.calendario_eventos, name='calendario_eventos'),
     path('eventos/editar/<int:pk>/', views.editar_evento, name='editar_evento'),

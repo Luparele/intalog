@@ -682,6 +682,15 @@ def gestao_certificados(request):
     return render(request, 'certificados_qsm.html', context)
 
 @login_required
+@permission_required('APP.can_view_certificados_list', raise_exception=True)
+def imprimir_certificados(request):
+    certificados = CertificadoQSMS.objects.all().order_by('nome_certificado')
+    context = {
+        'certificados': certificados,
+    }
+    return render(request, 'imprimir_certificados_qsm.html', context)
+
+@login_required
 @permission_required('APP.can_change_certificado', raise_exception=True)
 def editar_certificado(request, pk):
     certificado = get_object_or_404(CertificadoQSMS, pk=pk)
@@ -1132,4 +1141,5 @@ def excluir_veiculo_checklist(request, pk):
         veiculo.delete()
         messages.success(request, f'Veículo placa {placa} excluído com sucesso.')
     return redirect('APP:pagina_checklist')
+
 
